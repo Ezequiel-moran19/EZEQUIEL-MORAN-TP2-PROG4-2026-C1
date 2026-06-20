@@ -1,0 +1,13 @@
+.btn-primary{
+  background: var(--nexo-gradient);
+  border: none;
+}
+
+.btn-primary:hover{
+  opacity: .92;
+}
+
+.nav-pills .nav-link.active{
+  background: var(--nexo-gradient);
+  border: none;
+}

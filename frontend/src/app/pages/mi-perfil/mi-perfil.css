@@ -1,0 +1,12 @@
+.mt-n5 {
+  margin-top: -70px;
+}
+
+.btn-primary{
+  background: var(--nexo-gradient);
+  border: none;
+}
+
+.btn-primary:hover{
+  opacity: .92;
+}

@@ -1,0 +1,28 @@
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { Auth } from '../../services/auth';
+import { Usuario } from '../../interfaces/usuario.interface';
+
+@Component({
+  selector: 'app-navbar',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './navbar.html',
+  styleUrl: './navbar.css',
+})
+export class Navbar {
+
+  authService = inject(Auth);
+  router = inject(Router);
+
+  usuario: Usuario | null = this.authService.obtenerUsuarioLogueado();
+
+  logout(): void {
+
+    this.authService.logout();
+
+    this.router.navigate(['/']);
+
+  }
+
+}

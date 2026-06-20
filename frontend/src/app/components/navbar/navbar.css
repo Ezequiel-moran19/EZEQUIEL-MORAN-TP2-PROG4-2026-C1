@@ -1,0 +1,23 @@
+.custom-navbar{
+  background: var(--nexo-gradient);
+  box-shadow: 0 2px 15px rgba(0,0,0,.15);
+}
+
+.navbar-brand{
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+.nav-link{
+  color: rgba(255,255,255,.85) !important;
+  font-weight: 600;
+}
+
+.nav-link:hover{
+  color: white !important;
+}
+
+.btn-outline-light{
+  border-width: 2px;
+  font-weight: 600;
+}

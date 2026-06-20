@@ -1,0 +1,33 @@
+@if (!authService.estaLogueado()) {
+
+  <div class="container-fluid vh-100">
+
+    <div class="row h-100">
+
+      <div class="col-lg-6 p-0">
+        <app-bienvenida></app-bienvenida>
+      </div>
+
+      <div class="col-lg-6 d-flex justify-content-center align-items-center bg-light">
+
+        <div class="form-wrapper">
+          <router-outlet></router-outlet>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+} @else {
+
+  <app-navbar></app-navbar>
+
+  <div class="container mt-4">
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+}

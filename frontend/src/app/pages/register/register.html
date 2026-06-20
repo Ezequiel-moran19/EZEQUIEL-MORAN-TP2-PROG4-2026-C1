@@ -1,0 +1,140 @@
+<div class="card border-0 shadow-lg rounded-4">
+
+  <div class="card-body p-5">
+
+    <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-3 p-1">
+      <li class="nav-item"> <a class="nav-link fw-semibold" routerLink="/login"> Ingresar </a> </li>
+
+      <li class="nav-item"> <a class="nav-link active fw-semibold"> Crear cuenta </a> </li>
+    </ul>
+
+    <h2 class="text-center fw-bold mb-2">Crear cuenta</h2>
+    <p class="text-center text-muted mb-4"> Unite a la comunidad de Nexo</p>
+
+    <form [formGroup]="formRegistro" (ngSubmit)="registro()">
+
+      <div class="d-flex align-items-center gap-4 mb-4">
+        <img [src]="previewImagen || 'https://placehold.co/120x120'"class="rounded-circle border shadow-sm flex-shrink-0" width="120" height="120" alt="Perfil">
+        <div class="flex-grow-1">
+          <label class="form-label fw-semibold"> Foto de perfil </label>
+          <input type="file" class="form-control" accept="image/*" (change)="seleccionarImagen($event)">
+          <div class="form-text"> JPG, PNG o WEBP</div>
+          @if(formRegistro.controls.imagenPerfil.invalid && formRegistro.controls.imagenPerfil.touched){
+            <small class="text-danger d-block"> Debe seleccionar una imagen </small>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold"> Nombre</label>
+          <input id="name" type="text" class="form-control" formControlName="nombre" placeholder="Nombre">
+          @if(formRegistro.controls.nombre.invalid && formRegistro.controls.nombre.touched){
+            <small class="text-danger d-block">
+              @if(formRegistro.controls.nombre.errors?.['required']){ El nombre es obligatorio }
+              @if(formRegistro.controls.nombre.errors?.['minlength']){ El nombre debe tener al menos 2 caracteres }
+            </small>
+          }
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold"> Apellido </label>
+          <input type="text" class="form-control" formControlName="apellido" placeholder="Apellido">
+          @if(formRegistro.controls.apellido.invalid && formRegistro.controls.apellido.touched){
+            <small class="text-danger d-block">
+              @if(formRegistro.controls.apellido.errors?.['required']){ El apellido es obligatorio }
+              @if(formRegistro.controls.apellido.errors?.['minlength']){ El apellido debe tener al menos 2 caracteres }
+            </small>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Correo electrónico </label>
+        <input type="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com">
+        @if(formRegistro.controls.email.invalid && formRegistro.controls.email.touched){
+          <small class="text-danger d-block">
+            @if(formRegistro.controls.email.errors?.['required']){ El email es obligatorio  }
+            @if(formRegistro.controls.email.errors?.['email']){ El email no es válido  }
+          </small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold"> Nombre de usuario </label>
+        <input type="text" class="form-control" formControlName="nombreUsuario" placeholder="usuario123">
+        @if(formRegistro.controls.nombreUsuario.invalid && formRegistro.controls.nombreUsuario.touched){
+          <small class="text-danger d-block">
+            @if(formRegistro.controls.nombreUsuario.errors?.['required']){ El nombre de usuario es obligatorio }
+          </small>
+        }
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold">Contraseña </label>
+          <input type="password" class="form-control" formControlName="password" placeholder="********">
+          @if(formRegistro.controls.password.invalid && formRegistro.controls.password.touched){
+            <small class="text-danger d-block">
+              @if(formRegistro.controls.password.errors?.['required']){ La contraseña es obligatoria }
+              @if(formRegistro.controls.password.errors?.['minlength']){ Debe tener al menos 8 caracteres }
+              @if(formRegistro.controls.password.errors?.['pattern']){ Debe contener una mayúscula y un número }
+            </small>
+          }
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold"> Repetir contraseña </label>
+          <input type="password" class="form-control" formControlName="repetirPassword" placeholder="********">
+          @if(formRegistro.controls.repetirPassword.invalid && formRegistro.controls.repetirPassword.touched){
+            <small class="text-danger d-block">
+              @if(formRegistro.controls.repetirPassword.errors?.['required']){ Debe repetir la contraseña }
+            </small>
+          }
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold"> Fecha de nacimiento </label>
+        <input type="date" class="form-control" formControlName="fechaNacimiento">
+        @if(formRegistro.controls.fechaNacimiento.invalid && formRegistro.controls.fechaNacimiento.touched){
+          <small class="text-danger d-block">La fecha de nacimiento es obligatoria </small>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold"> Descripción </label>
+        <textarea rows="4" class="form-control" formControlName="descripcion" placeholder="Contanos algo sobre vos..."></textarea>
+        @if(formRegistro.controls.descripcion.invalid && formRegistro.controls.descripcion.touched){
+          <small class="text-danger d-block">La descripción es obligatoria </small>
+        }
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold"> Perfil</label>
+        <select class="form-select" formControlName="perfil">
+          <option value="usuario"> Usuario </option>
+          <option value="administrador"> Administrador </option>
+        </select>
+      </div>
+
+
+      @if(mensajeError()){
+        <div class="alert alert-danger"> {{ mensajeError() }} </div>
+      }
+
+      @if(mensajeExito()){
+        <div class="alert alert-success">{{ mensajeExito() }} </div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="cargando()">
+        @if(cargando()){ Registrando... }
+        @else{ Registrarse }
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

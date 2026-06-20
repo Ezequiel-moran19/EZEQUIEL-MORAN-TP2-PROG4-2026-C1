@@ -1,0 +1,55 @@
+<div class="card shadow-lg border-0 rounded-4">
+
+  <div class="card-body p-5">
+
+    <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-3 p-1">
+      <li class="nav-item"><a class="nav-link active fw-semibold">Ingresar </a> </li>
+      <li class="nav-item"> <a class="nav-link fw-semibold" routerLink="/register"> Crear cuenta </a> </li>
+    </ul>
+
+    <h2 class="text-center fw-bold mb-2"> Iniciar Sesión </h2>
+    <p class="text-center text-muted mb-4"> Ingresá para acceder a Nexo </p>
+
+    <form [formGroup]="formLogin" (ngSubmit)="login()">
+
+      <div class="mb-3">
+
+        <label class="form-label fw-semibold"> Correo o nombre de usuario </label>
+        <input id="usuario" type="text" class="form-control form-control-lg" formControlName="usuario">
+        @if(formLogin.controls.usuario.invalid && formLogin.controls.usuario.touched){
+          <small class="text-danger">
+            @if(formLogin.controls.usuario.errors?.['required']){ El usuario o correo es obligatorio }
+          </small>
+        }
+      </div>
+
+      <div class="mb-4">
+
+        <label class="form-label fw-semibold"> Contraseña </label>
+        <input type="password" class="form-control form-control-lg" formControlName="password">
+
+        @if(formLogin.controls.password.invalid && formLogin.controls.password.touched){
+          <small class="text-danger d-block">
+            @if(formLogin.controls.password.errors?.['required']){ La contraseña es obligatoria }
+            @if(formLogin.controls.password.errors?.['minlength']){ La contraseña debe tener al menos 8 caracteres }
+            @if(formLogin.controls.password.errors?.['pattern']){ La contraseña debe contener una mayúscula y un número }
+          </small>
+        }
+
+      </div>
+      @if(mensajeError()){
+        <div class="alert alert-danger">
+          {{ mensajeError() }}
+        </div>
+      }
+
+      <button class="btn btn-primary w-100 py-2" [disabled]="formLogin.invalid || cargando()"> 
+          @if(cargando()){ Ingresando...} 
+          @else { Ingresar}
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

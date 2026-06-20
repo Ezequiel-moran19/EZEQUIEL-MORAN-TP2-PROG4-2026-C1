@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+:root{
+  --nexo-primary: #2563eb;
+  --nexo-secondary: #4f46e5;
+  --nexo-accent: #7c3aed;
+  --nexo-gradient: linear-gradient(
+    135deg,
+    #2563eb,
+    #4f46e5,
+    #7c3aed
+  );
+}
