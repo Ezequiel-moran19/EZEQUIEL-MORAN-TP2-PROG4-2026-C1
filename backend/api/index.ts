@@ -15,7 +15,7 @@ async function bootstrap() {
 
   app.useGlobalPipes( new ValidationPipe({ whitelist: true, }), );
 
-  app.enableCors({origin: ['https://ezequiel-moran-tp-2-prog-4-2026-uhq.vercel.app'], credentials: true});
+  app.enableCors({origin: ['https://ezequiel-moran-tp-2-prog-4-2026-fro.vercel.app'], credentials: true});
 
   await app.init();
 
