@@ -27,12 +27,11 @@ export class PostCard {
 
   puedeEliminar(): boolean {
 
-    if (!this.publicacion.autor) {
-      return false;
-    }
-
     return (
-      (typeof this.publicacion.autor === 'object' && this.publicacion.autor._id === this.usuarioId) || this.perfil === 'administrador'
+      this.publicacion.autor &&
+      this.publicacion.autor._id === this.usuarioId ||
+      this.perfil === 'administrador'
     );
+
   }
 }

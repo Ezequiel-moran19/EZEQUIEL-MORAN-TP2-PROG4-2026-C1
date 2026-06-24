@@ -37,7 +37,7 @@ export class MiPerfil implements OnInit {
 
       next:(publicaciones)=>{
         this.ultimasPublicaciones = publicaciones
-          .filter(p => p.autor._id === this.usuario?._id)
+          .filter(p => p.autor && p.autor._id === this.usuario?._id)
           .slice(0,3);
         this.cdr.detectChanges();
       }
