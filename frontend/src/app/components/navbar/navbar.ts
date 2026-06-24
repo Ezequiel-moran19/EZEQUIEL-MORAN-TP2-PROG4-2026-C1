@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { Usuario } from '../../interfaces/usuario.interface';
 
 @Component({
@@ -12,7 +12,7 @@ import { Usuario } from '../../interfaces/usuario.interface';
 })
 export class Navbar {
 
-  authService = inject(Auth);
+  authService = inject(AuthService);
   router = inject(Router);
 
   usuario: Usuario | null = this.authService.obtenerUsuarioLogueado();

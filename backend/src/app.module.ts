@@ -6,9 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import dns from 'dns';
+
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 @Module({
-  imports: [
+imports: [
     ConfigModule.forRoot(),
     PublicacionesModule,
     UsuariosModule,

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { Usuario } from '../../interfaces/usuario.interface';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class MiPerfil {
 
-    authService = inject(Auth);
+    authService = inject(AuthService);
 
   usuario: Usuario | null = this.authService.obtenerUsuarioLogueado();
 }

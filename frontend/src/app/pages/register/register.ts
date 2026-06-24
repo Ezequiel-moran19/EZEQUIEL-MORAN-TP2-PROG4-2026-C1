@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
@@ -14,7 +14,7 @@ import { ChangeDetectorRef } from '@angular/core';
 
 export class Register {
 
-  authService = inject(Auth);
+  authService = inject(AuthService);
   router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 

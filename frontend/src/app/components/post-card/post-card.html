@@ -1,1 +1,56 @@
-<p>post-card works!</p>
+<div class="card shadow-sm border-0 rounded-4 mb-4 post-card">
+
+  @if(publicacion.imagen){
+    <img 
+      [src]="publicacion.imagen" 
+      class="card-img-top"
+      alt="imagen publicación">
+  }
+
+  <div class="card-body">
+
+    <div class="mb-2">
+      <span class="badge bg-light text-dark">
+        Publicación
+      </span>
+    </div>
+
+    <h5 class="card-title fw-bold">
+      {{ publicacion.titulo }}
+    </h5>
+
+    <p class="card-text text-muted">
+      {{ publicacion.descripcion }}
+    </p>
+
+  </div>
+
+  <div class="card-footer bg-white border-0">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+      <button class="btn btn-light border-0 like-btn" (click)="like.emit(publicacion._id!)">
+        @if(usuarioDioLike()){
+          ❤️
+        } @else {
+          🤍
+        }
+        <span class="ms-2 fw-semibold"> {{ publicacion.likes?.length || 0 }} </span>
+      </button>
+
+      @if(puedeEliminar()){
+
+        <button
+          class="btn btn-outline-danger btn-sm rounded-circle"
+          title="Eliminar publicación"
+          (click)="eliminar.emit(publicacion._id!)">
+          🗑
+        </button>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
