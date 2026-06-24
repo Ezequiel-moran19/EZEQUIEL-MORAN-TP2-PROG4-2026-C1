@@ -19,25 +19,29 @@ export class PublicacionesService {
     return new this.publicacionesModel(nuevaPublicacion).save();
   }
 
-  async findAll(orden?: string, usuario?: string, offset = 0, limit = 10) {
+  async findAll(orden?: string, offset = 0, limit = 10) {
 
     const filtro: any = { activo: true };
 
-    if (usuario) {
-      filtro.autorId = usuario;
-    }
-
-    let query = this.publicacionesModel.find(filtro);
+    let query = this.publicacionesModel.find(filtro).populate('autor','nombre apellido nombreUsuario imagenPerfil');
 
     if (orden === 'likes') {
-      query = query.sort({ cantidadLikes: -1 });
+      query = query.sort({
+        cantidadLikes: -1
+      });
 
     } else if (orden === 'antiguas') {
-      query = query.sort({ createdAt: 1 });
+      query = query.sort({
+        createdAt: 1
+      });
 
     } else {
-      query = query.sort({ createdAt: -1 });
+      query = query.sort({
+        createdAt: -1
+      });
+
     }
+
     return query.skip(offset).limit(limit);
   }
 
@@ -84,7 +88,7 @@ export class PublicacionesService {
       throw new NotFoundException('Publicación no encontrada');
     }
 
-    if (publicacion.autorId !== usuarioId && perfil !== 'administrador') {
+    if (publicacion.autor.toString() !== usuarioId && perfil !== 'administrador') {
       throw new ForbiddenException('No autorizado');
     }
 

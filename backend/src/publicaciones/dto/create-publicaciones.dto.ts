@@ -16,5 +16,5 @@ export class CreatePublicacionesDto {
 
     @IsString()
     @IsNotEmpty()
-    autorId!: string;
+    autor!: string;
 }
