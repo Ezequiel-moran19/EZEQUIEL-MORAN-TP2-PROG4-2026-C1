@@ -1,9 +1,11 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type PublicacioneDocument = Publicaciones & Document;
+export type PublicacionDocument = Publicaciones & Document;
 
-@Schema({timestamps: true})
+@Schema({ timestamps: true })
 export class Publicaciones {
+
     @Prop({ required: true })
     titulo!: string;
 

@@ -2,22 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { CreatePublicacionesDto } from './dto/create-publicaciones.dto';
 import { UpdatePublicacionesDto } from './dto/update-publicaciones.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Publicaciones } from './entities/publicacione.entity';
+import { Publicaciones } from './schemas/publicaciones.schema';
 import { Model } from 'mongoose';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PublicacionesService {
-  constructor(@InjectModel(Publicaciones.name) private publicacionesModel: Model<Publicaciones>) {}
 
-  create(dto: CreatePublicacionesDto, archivo?: Express.Multer.File ) {
+  constructor(@InjectModel(Publicaciones.name) private publicacionesModel: Model<Publicaciones>) { }
 
-    const nuevaPublicacion = {...dto, ...(archivo && { imagen: archivo.path }) }
-
+  create(dto: CreatePublicacionesDto, archivo?: Express.Multer.File) {
+    const nuevaPublicacion = {
+      ...dto,
+      ...(archivo && { imagen: archivo.path })
+    };
     return new this.publicacionesModel(nuevaPublicacion).save();
   }
 
   async findAll(orden?: string, usuario?: string, offset = 0, limit = 10) {
+
     const filtro: any = { activo: true };
 
     if (usuario) {
@@ -35,12 +38,7 @@ export class PublicacionesService {
     } else {
       query = query.sort({ createdAt: -1 });
     }
-
     return query.skip(offset).limit(limit);
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} publicacione`;
   }
 
   update(id: number, updatePublicacionesDto: UpdatePublicacionesDto) {
@@ -58,6 +56,7 @@ export class PublicacionesService {
     if (publicacion.likes.includes(usuarioId)) {
       return publicacion;
     }
+
     publicacion.likes.push(usuarioId);
     publicacion.cantidadLikes = publicacion.likes.length;
     return publicacion.save();
@@ -73,10 +72,12 @@ export class PublicacionesService {
 
     publicacion.likes = publicacion.likes.filter(id => id !== usuarioId);
     publicacion.cantidadLikes = publicacion.likes.length;
+
     return publicacion.save();
   }
-  
+
   async remove(id: string, usuarioId: string, perfil: string) {
+
     const publicacion = await this.publicacionesModel.findById(id);
 
     if (!publicacion) {
@@ -86,6 +87,7 @@ export class PublicacionesService {
     if (publicacion.autorId !== usuarioId && perfil !== 'administrador') {
       throw new ForbiddenException('No autorizado');
     }
+
     publicacion.activo = false;
     return publicacion.save();
   }

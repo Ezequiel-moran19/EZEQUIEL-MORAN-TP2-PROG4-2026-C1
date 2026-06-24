@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
 import { PublicacionesController } from './publicaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Publicaciones, PublicacionesSchema } from './entities/publicacione.entity';
+import { Publicaciones, PublicacionesSchema } from './schemas/publicaciones.schema';
 
 @Module({
   imports: [

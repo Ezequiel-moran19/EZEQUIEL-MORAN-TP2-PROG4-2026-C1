@@ -53,11 +53,6 @@ export class PublicacionesController {
     return this.publicacionesService.findAll(orden, usuario, offset, limit);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePublicacioneDto: UpdatePublicacionesDto) {
     return this.publicacionesService.update(+id, updatePublicacioneDto);

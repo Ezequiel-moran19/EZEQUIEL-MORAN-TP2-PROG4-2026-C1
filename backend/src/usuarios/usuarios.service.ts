@@ -2,16 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Usuario } from './entities/usuario.entity';
+import { Usuario } from './schemas/usuario.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class UsuariosService {
 
-  constructor(
-    @InjectModel(Usuario.name)
-    private usuarioModel: Model<Usuario>
-  ) {}
+  constructor(@InjectModel(Usuario.name) private usuarioModel: Model<Usuario>) {}
 
   create(createUsuarioDto: CreateUsuarioDto) {
     const usuarioCreado = new this.usuarioModel(createUsuarioDto);
