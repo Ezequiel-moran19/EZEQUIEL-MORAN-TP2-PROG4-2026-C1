@@ -42,7 +42,7 @@ export class PostForm {
     const formData = new FormData();
     formData.append('titulo', this.form.value.titulo ?? '');
     formData.append('descripcion', this.form.value.descripcion ?? '');
-    formData.append('autorId', usuario._id!);
+    formData.append('autor', usuario._id!);
 
     if (this.archivo) {
       formData.append('imagen', this.archivo);

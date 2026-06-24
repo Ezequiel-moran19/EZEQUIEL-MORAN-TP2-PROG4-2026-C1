@@ -24,10 +24,11 @@ export class PostCard {
 
     return this.publicacion.likes.includes(this.usuarioId);
   }
+  
   puedeEliminar(): boolean {
 
     return (
-      this.publicacion.autorId === this.usuarioId ||
+      this.publicacion.autor._id === this.usuarioId ||
       this.perfil === 'administrador'
     );
 
