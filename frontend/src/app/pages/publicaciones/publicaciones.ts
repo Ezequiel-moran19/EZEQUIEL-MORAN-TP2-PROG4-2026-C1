@@ -82,7 +82,10 @@ export class Publicaciones implements OnInit {
 
   cambiarOrden(event: Event) {
     const select = event.target as HTMLSelectElement;
+
     this.orden = select.value;
+    this.pagina = 0; 
+
     this.cargarPublicaciones();
   }
 
