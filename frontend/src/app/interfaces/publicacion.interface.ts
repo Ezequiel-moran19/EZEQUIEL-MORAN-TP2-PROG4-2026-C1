@@ -3,11 +3,18 @@ export interface Publicacion {
   titulo: string;
   descripcion: string;
   imagen?: string;
-  autorId: string;
-  autorNombre?: string;
-  autorApellido?: string;
-  autorImagen?: string;
-  fechaCreacion?: Date;
+
+  autor: {
+    _id: string;
+    nombre: string;
+    apellido: string;
+    nombreUsuario: string;
+    imagenPerfil?: string;
+  };
+
+  createdAt?: Date;
+
   likes?: string[];
+  cantidadLikes?: number;
   activo?: boolean;
 }
