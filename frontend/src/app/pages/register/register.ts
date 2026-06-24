@@ -20,6 +20,7 @@ export class Register {
 
   archivoSeleccionado: File | null = null;
   previewImagen: string | null = null;
+  fechaMaxima = new Date().toISOString().split('T')[0];
 
   mensajeError = signal('');
   mensajeExito = signal('');
@@ -43,11 +44,14 @@ export class Register {
     if (this.formRegistro.invalid) {
       this.formRegistro.markAllAsTouched();
       this.mensajeError.set('Complete correctamente todos los campos');
-      this.resetearForm();
       return;
     }
 
     if (!this.validarPasswords()) {
+      return;
+    }
+
+    if (!this.validarFechaNacimiento()) {
       return;
     }
 
@@ -57,10 +61,6 @@ export class Register {
 
     const formData = this.crearFormData();
 
-
-  for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-}
     this.authService.authRegistro(formData)
       .subscribe({
         next: () => this.registroExitoso(),
@@ -81,7 +81,6 @@ export class Register {
   validarPasswords(): boolean {
     if (this.formRegistro.value.password !== this.formRegistro.value.repetirPassword) {
       this.mensajeError.set('Las contraseñas no coinciden');
-      this.resetearForm();
       return false;
     }
     return true;
@@ -162,5 +161,35 @@ export class Register {
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(archivo);
+  }
+
+  validarFechaNacimiento(): boolean {
+
+    const fecha = this.formRegistro.value.fechaNacimiento;
+
+    if (!fecha) { return false; }
+
+    const fechaNacimiento = new Date(fecha);
+    const hoy = new Date();
+
+    if (fechaNacimiento > hoy) {
+      this.mensajeError.set('La fecha de nacimiento no puede ser futura');
+      return false;
+    }
+
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+
+    if (hoy.getMonth() < fechaNacimiento.getMonth() ||
+      (hoy.getMonth() === fechaNacimiento.getMonth() &&
+      hoy.getDate() < fechaNacimiento.getDate()) ) {
+      edad--;
+    }
+
+    if (edad < 13) {
+      this.mensajeError.set('Debe tener al menos 13 años para registrarse');
+      return false;
+    }
+
+    return true;
   }
 }

@@ -6,26 +6,16 @@
       <small class="text-muted"> Compartí tus ideas con la comunidad </small>
     </div>
 
-    <select
-      class="form-select shadow-sm"
-      style="width:180px"
-      (change)="cambiarOrden($event)">
-
+    <select class="form-select shadow-sm" style="width:180px" (change)="cambiarOrden($event)">
       <option value="fecha">Más recientes</option>
       <option value="antiguas">Más antiguas</option>
       <option value="likes">Más likes</option>
-
     </select>
 
       <button  class="btn btn-primary shadow-sm" (click)="toggleFormulario()">
-        @if(!mostrarFormulario){
-          ➕ Crear
-        }
-        @else {
-          ✖ Cerrar
-        }
+        @if(!mostrarFormulario){ ➕ Crear }
+        @else { ✖ Cerrar }
       </button>
-    </div>
   </div>
 
   @if(mostrarFormulario){
