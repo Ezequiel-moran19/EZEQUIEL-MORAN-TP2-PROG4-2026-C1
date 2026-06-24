@@ -30,27 +30,27 @@ export class MiPerfil implements OnInit {
 
   cargarMisPublicaciones(){
 
-      if(!this.usuario) return;
+    if(!this.usuario) return;
 
-      this.publicacionesService.obtenerPublicaciones()
-      .subscribe({
+    this.publicacionesService.obtenerPublicaciones()
+    .subscribe({
 
-        next:(publicaciones)=>{
-          this.ultimasPublicaciones = publicaciones
-            .filter(p => p.autorId === this.usuario?._id)
-            .slice(0,3);
-          this.cdr.detectChanges();
-        }
+      next:(publicaciones)=>{
+        this.ultimasPublicaciones = publicaciones
+          .filter(p => p.autorId === this.usuario?._id)
+          .slice(0,3);
+        this.cdr.detectChanges();
+      }
 
-      });
-    }
+    });
+  }
 
-    eliminarPublicacion(id:string){
+  eliminarPublicacion(id:string){
 
-      if(!this.usuario) return;
+    if(!this.usuario) return;
 
-      this.publicacionesService
-        .eliminarPublicacion(id, this.usuario._id!, this.usuario.perfil)
-        .subscribe(()=> this.cargarMisPublicaciones());
-    }
+    this.publicacionesService
+      .eliminarPublicacion(id, this.usuario._id!, this.usuario.perfil)
+      .subscribe(()=> this.cargarMisPublicaciones());
+  }
 }
