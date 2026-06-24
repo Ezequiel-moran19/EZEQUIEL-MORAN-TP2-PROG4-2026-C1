@@ -22,30 +22,34 @@ export class PostForm {
 
   form = this.fb.group({ titulo: ['', Validators.required], descripcion: ['', Validators.required] });
 
-  // async seleccionarArchivo(event: Event) {
+async seleccionarArchivo(event: Event) {
 
-  //   const input = event.target as HTMLInputElement;
+  const input = event.target as HTMLInputElement;
 
-  //   if(input.files?.length){
+  if (input.files?.length) {
 
-  //     const imagen = input.files[0];
-  //     const opciones = { maxSizeMB: 1, maxWidthOrHeight: 1200, useWebWorker: true };
-  //     this.archivo = await imageCompression(imagen, opciones);
-  //   }
-  // }
-  async seleccionarArchivo(event: Event) {
+    const imagen = input.files[0];
+    if (imagen.type === 'image/jpeg' || imagen.type === 'image/jpg') {
 
-    const input = event.target as HTMLInputElement;
+      const opciones = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1200,
+        useWebWorker: true
+      };
 
-    if(input.files?.length){
+      this.archivo = await imageCompression(imagen, opciones);
 
-      this.archivo = input.files[0];
+    } else {
 
-      console.log(this.archivo);
-      console.log(this.archivo.type);
-      console.log(this.archivo.name);
+      this.archivo = imagen;
+
     }
+
+    console.log(this.archivo);
+    console.log(this.archivo.type);
+    console.log(this.archivo.name);
   }
+}
   crearPublicacion() {
 
     const usuario = this.authService.obtenerUsuarioLogueado();
