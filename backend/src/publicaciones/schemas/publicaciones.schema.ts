@@ -1,5 +1,6 @@
-import { Document } from 'mongoose';
+import { Types, Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Usuario } from '../../usuarios/schemas/usuario.schema';
 
 export type PublicacionDocument = Publicaciones & Document;
 
@@ -15,8 +16,8 @@ export class Publicaciones {
     @Prop()
     imagen?: string;
 
-    @Prop({ required: true })
-    autorId!: string;
+    @Prop({ type: Types.ObjectId, ref: Usuario.name, required: true })
+    autor!: Types.ObjectId;
 
     @Prop({ default: true })
     activo!: boolean;

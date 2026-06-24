@@ -46,11 +46,10 @@ export class PublicacionesController {
   @Get()
   findAll(
     @Query('orden') orden?: string,
-    @Query('usuario') usuario?: string,
     @Query('offset') offset?: number,
     @Query('limit') limit?: number,
   ) {
-    return this.publicacionesService.findAll(orden, usuario, offset, limit);
+    return this.publicacionesService.findAll(orden, offset, limit);
   }
 
   @Patch(':id')
