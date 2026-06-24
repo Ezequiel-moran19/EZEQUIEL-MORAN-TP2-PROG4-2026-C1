@@ -97,8 +97,8 @@
 
       <div class="mb-3">
         <label class="form-label fw-semibold"> Fecha de nacimiento </label>
-        <input type="date" class="form-control" formControlName="fechaNacimiento">
-        @if(formRegistro.controls.fechaNacimiento.invalid && formRegistro.controls.fechaNacimiento.touched){
+        <input type="date" class="form-control" formControlName="fechaNacimiento" [max]="fechaMaxima">
+       @if(formRegistro.controls.fechaNacimiento.invalid && formRegistro.controls.fechaNacimiento.touched){
           <small class="text-danger d-block">La fecha de nacimiento es obligatoria </small>
         }
       </div>

@@ -28,6 +28,10 @@ export class PublicacionesService {
 
     if (orden === 'likes') {
       query = query.sort({ cantidadLikes: -1 });
+
+    } else if (orden === 'antiguas') {
+      query = query.sort({ createdAt: 1 });
+
     } else {
       query = query.sort({ createdAt: -1 });
     }

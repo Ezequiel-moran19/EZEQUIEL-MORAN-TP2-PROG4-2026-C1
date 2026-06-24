@@ -41,7 +41,6 @@ export class MiPerfil implements OnInit {
           .slice(0,3);
         this.cdr.detectChanges();
       }
-
     });
   }
 
