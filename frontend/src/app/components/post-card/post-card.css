@@ -1,0 +1,42 @@
+.card {
+  max-width: 500px;
+  margin: 20px auto;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card-img-top {
+  height: 250px;
+  max-height: 350px;
+  object-fit: cover;
+}
+
+.btn-light {
+  font-size: 1.1rem;
+  transition: transform .2s ease, background-color .2s ease;
+}
+
+.btn-light:hover {
+  transform: scale(1.08);
+  background-color: #f1f3f5;
+}
+
+.btn-outline-danger {
+  transition: transform .2s ease;
+}
+
+.btn-outline-danger:hover {
+  transform: scale(1.08);
+}
+
+.like-btn {
+  transition: background-color .2s ease;
+}
+
+.like-btn:hover {
+  background-color: #f1f3f5;
+}

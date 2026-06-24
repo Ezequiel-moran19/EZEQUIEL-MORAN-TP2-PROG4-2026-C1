@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Bienvenida } from '../../components/bienvenida/bienvenida';
 import { Navbar } from '../../components/navbar/navbar';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,6 @@ import { Auth } from '../../services/auth';
 })
 export class Home {
   
-  authService = inject(Auth);
+  authService = inject(AuthService);
   
 }

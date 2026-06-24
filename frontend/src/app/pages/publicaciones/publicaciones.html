@@ -1,9 +1,60 @@
-<h2 class="mb-4">Publicaciones</h2>
+<div class="container">
 
-<div class="card shadow-sm border-0">
-  <div class="card-body text-center py-5">
-    <h3 class="fw-bold mb-3">Próximamente </h3>
-    <p class="text-muted mb-4"> En el Sprint 2 estará disponible la creación, visualización y gestión de publicaciones. </p>
-    <button class="btn btn-primary" disabled> Crear publicación </button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1"> Publicaciones </h2>
+      <small class="text-muted"> Compartí tus ideas con la comunidad </small>
+    </div>
+
+    <div class="d-flex gap-2">
+      <select  class="form-select shadow-sm" style="width:180px" (change)="cambiarOrden($event)">
+        <option value="fecha"> Más recientes </option>
+        <option value="likes"> Más likes</option>
+      </select>
+
+      <button  class="btn btn-primary shadow-sm" (click)="toggleFormulario()">
+        @if(!mostrarFormulario){
+          ➕ Crear
+        }
+        @else {
+          ✖ Cerrar
+        }
+      </button>
+    </div>
   </div>
+
+  @if(mostrarFormulario){
+    <div class="mb-4">
+      <app-post-form (creada)="publicacionCreada()"> </app-post-form>
+    </div>
+  }
+
+  <div class="feed">
+    @for (publicacion of publicaciones; track publicacion._id) {
+      <app-post-card
+        [publicacion]="publicacion"
+        [usuarioId]="authService.obtenerUsuarioLogueado()?._id || ''"
+        [perfil]="authService.obtenerUsuarioLogueado()?.perfil || ''"
+        (like)="darLike($event)"
+        (eliminar)="eliminarPublicacion($event)">
+      </app-post-card>
+    }
+  </div>
+
+  @if(publicaciones.length === 0){
+    <div class="text-center mt-5">
+      <h5 class="text-muted"> No hay publicaciones todavía </h5>
+    </div>
+  }
+
+  <div class="d-flex justify-content-center gap-3 mt-4">
+    <button  class="btn btn-outline-primary" (click)="anteriorPagina()" [disabled]="pagina === 0">
+      ← Anterior
+    </button>
+
+    <button class="btn btn-outline-primary" (click)="siguientePagina()" [disabled]="!haySiguiente">
+      Siguiente →
+    </button>
+  </div>
+
 </div>

@@ -7,7 +7,7 @@ import { Usuario } from '../interfaces/usuario.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class Auth {
+export class AuthService {
 
   private http = inject(HttpClient);
 
@@ -39,5 +39,4 @@ export class Auth {
   logout(): void {
     localStorage.removeItem('usuario');
   }
-
 }

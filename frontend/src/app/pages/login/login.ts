@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Auth } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-  authService = inject(Auth);
+  authService = inject(AuthService);
   router = inject(Router);
   mensajeError = signal('');
   cargando = signal(false);
