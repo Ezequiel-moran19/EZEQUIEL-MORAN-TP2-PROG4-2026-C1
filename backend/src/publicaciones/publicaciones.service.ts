@@ -16,7 +16,12 @@ export class PublicacionesService {
       ...dto,
       ...(archivo && { imagen: archivo.path })
     };
-    return new this.publicacionesModel(nuevaPublicacion).save();
+    return new this.publicacionesModel(nuevaPublicacion)
+    .save()
+    .then(pub => pub.populate(
+      'autor',
+      'nombre apellido nombreUsuario imagenPerfil'
+    ));
   }
 
   async findAll(orden?: string, offset = 0, limit = 10) {

@@ -24,6 +24,10 @@ export class PublicacionesController {
     @Body() dto: CreatePublicacionesDto,
     @UploadedFile() archivo: Express.Multer.File
   ) {
+
+    console.log('DTO:', dto);
+    console.log('ARCHIVO:', archivo);
+
     return this.publicacionesService.create(dto, archivo);
   }
 
