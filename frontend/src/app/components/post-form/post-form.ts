@@ -22,18 +22,30 @@ export class PostForm {
 
   form = this.fb.group({ titulo: ['', Validators.required], descripcion: ['', Validators.required] });
 
+  // async seleccionarArchivo(event: Event) {
+
+  //   const input = event.target as HTMLInputElement;
+
+  //   if(input.files?.length){
+
+  //     const imagen = input.files[0];
+  //     const opciones = { maxSizeMB: 1, maxWidthOrHeight: 1200, useWebWorker: true };
+  //     this.archivo = await imageCompression(imagen, opciones);
+  //   }
+  // }
   async seleccionarArchivo(event: Event) {
 
     const input = event.target as HTMLInputElement;
 
     if(input.files?.length){
 
-      const imagen = input.files[0];
-      const opciones = { maxSizeMB: 1, maxWidthOrHeight: 1200, useWebWorker: true };
-      this.archivo = await imageCompression(imagen, opciones);
+      this.archivo = input.files[0];
+
+      console.log(this.archivo);
+      console.log(this.archivo.type);
+      console.log(this.archivo.name);
     }
   }
-
   crearPublicacion() {
 
     const usuario = this.authService.obtenerUsuarioLogueado();
@@ -46,6 +58,9 @@ export class PostForm {
 
     if (this.archivo) {
       formData.append('imagen', this.archivo);
+      console.log(this.archivo);
+      console.log(this.archivo?.type);
+      console.log(this.archivo?.name);
     }
 
     this.publicacionesService.crearPublicacion(formData)
