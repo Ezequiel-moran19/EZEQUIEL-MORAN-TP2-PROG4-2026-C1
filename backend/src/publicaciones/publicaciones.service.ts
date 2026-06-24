@@ -1,26 +1,88 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
-import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
+import { CreatePublicacionesDto } from './dto/create-publicaciones.dto';
+import { UpdatePublicacionesDto } from './dto/update-publicaciones.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Publicaciones } from './entities/publicacione.entity';
+import { Model } from 'mongoose';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PublicacionesService {
-  create(createPublicacioneDto: CreatePublicacioneDto) {
-    return 'This action adds a new publicacione';
+  constructor(@InjectModel(Publicaciones.name) private publicacionesModel: Model<Publicaciones>) {}
+
+  create(dto: CreatePublicacionesDto, archivo?: Express.Multer.File ) {
+
+    const nuevaPublicacion = {...dto, ...(archivo && { imagen: archivo.path }) }
+
+    return new this.publicacionesModel(nuevaPublicacion).save();
   }
 
-  findAll() {
-    return `This action returns all publicaciones`;
+  async findAll(orden?: string, usuario?: string, offset = 0, limit = 10) {
+    const filtro: any = { activo: true };
+
+    if (usuario) {
+      filtro.autorId = usuario;
+    }
+
+    let query = this.publicacionesModel.find(filtro);
+
+    if (orden === 'likes') {
+      query = query.sort({ cantidadLikes: -1 });
+    } else {
+      query = query.sort({ createdAt: -1 });
+    }
+
+    return query.skip(offset).limit(limit);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} publicacione`;
   }
 
-  update(id: number, updatePublicacioneDto: UpdatePublicacioneDto) {
+  update(id: number, updatePublicacionesDto: UpdatePublicacionesDto) {
     return `This action updates a #${id} publicacione`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} publicacione`;
+  async like(id: string, usuarioId: string) {
+
+    const publicacion = await this.publicacionesModel.findById(id);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    if (publicacion.likes.includes(usuarioId)) {
+      return publicacion;
+    }
+    publicacion.likes.push(usuarioId);
+    publicacion.cantidadLikes = publicacion.likes.length;
+    return publicacion.save();
+  }
+
+  async quitarLike(id: string, usuarioId: string) {
+
+    const publicacion = await this.publicacionesModel.findById(id);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    publicacion.likes = publicacion.likes.filter(id => id !== usuarioId);
+    publicacion.cantidadLikes = publicacion.likes.length;
+    return publicacion.save();
+  }
+  
+  async remove(id: string, usuarioId: string, perfil: string) {
+    const publicacion = await this.publicacionesModel.findById(id);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    if (publicacion.autorId !== usuarioId && perfil !== 'administrador') {
+      throw new ForbiddenException('No autorizado');
+    }
+    publicacion.activo = false;
+    return publicacion.save();
   }
 }
