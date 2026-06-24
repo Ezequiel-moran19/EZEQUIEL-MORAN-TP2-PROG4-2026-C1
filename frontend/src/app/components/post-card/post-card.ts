@@ -26,10 +26,13 @@ export class PostCard {
   }
 
   puedeEliminar(): boolean {
-    return (
-      this.publicacion.autor._id === this.usuarioId ||
-      this.perfil === 'administrador'
-    );
 
+    if (!this.publicacion.autor) {
+      return false;
+    }
+
+    return (
+      (typeof this.publicacion.autor === 'object' && this.publicacion.autor._id === this.usuarioId) || this.perfil === 'administrador'
+    );
   }
 }
