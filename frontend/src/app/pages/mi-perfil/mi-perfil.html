@@ -26,10 +26,13 @@
     <div class="col-lg-4">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <h5 class="fw-bold mb-3"> Información </h5>
-          <p class="mb-3"> 📧 {{ usuario?.email }} </p>
-          <p class="mb-3"> 🎂 {{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
-          <p class="mb-0">👤 {{ usuario?.nombre }} {{ usuario?.apellido }}</p>
+        <h5 class="fw-bold mb-3">Información</h5>
+        <p>📧 {{ usuario?.email }}</p>
+        <p>👤 {{ usuario?.nombre }} {{ usuario?.apellido }}</p>
+        <p>🆔 {{ usuario?.nombreUsuario }}</p>
+        <p>🎂 {{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+        <p>📝 {{ usuario?.descripcion }}</p>
+        <p>🔐 {{ usuario?.perfil }}</p>
         </div>
       </div>
     </div>
@@ -37,8 +40,20 @@
     <div class="col-lg-8">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <h4 class="fw-bold mb-3"> Publicaciones </h4>
-          <div class="alert alert-light border"> Todavía no hay publicaciones. </div>
+
+          <h4 class="fw-bold mb-3">Publicaciones</h4>
+
+          <p>Cantidad: {{ ultimasPublicaciones.length }}</p>
+
+          @for (post of ultimasPublicaciones; track post._id) {
+            <app-post-card
+              [publicacion]="post"
+              [usuarioId]="usuario?._id || ''"
+              [perfil]="usuario?.perfil || ''"
+              (eliminar)="eliminarPublicacion($event)">
+            </app-post-card>
+          }
+
         </div>
       </div>
     </div>
