@@ -1,13 +1,68 @@
 .btn-primary{
-  background: var(--nexo-gradient);
-  border: none;
+    background: var(--nexo-gradient);
+    border: none;
 }
 
 .btn-primary:hover{
-  opacity: .92;
+    opacity:.92;
 }
 
 .nav-pills .nav-link.active{
-  background: var(--nexo-gradient);
-  border: none;
+    background: var(--nexo-gradient);
+    border:none;
+}
+
+.filtro-select{
+    width:220px;
+    height:46px;
+
+    border-radius:14px;
+    border:1px solid #3a3f55;
+
+    background:#232838;
+    color:#fff;
+
+    font-weight:500;
+    transition:.2s;
+}
+
+.filtro-select:hover{
+    border-color:var(--nexo-primary);
+}
+
+.filtro-select:focus{
+    border-color:var(--nexo-primary);
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.25);
+}
+
+/* Tablets */
+
+@media (max-width:991px){
+
+    .filtro-select{
+        width:100%;
+    }
+
+}
+
+/* Celulares */
+
+@media (max-width:576px){
+
+    h2{
+        font-size:1.6rem;
+    }
+
+    small{
+        display:block;
+    }
+
+    .filtro-select{
+        width:100%;
+    }
+
+    .btn-primary{
+        width:100%;
+    }
+
 }

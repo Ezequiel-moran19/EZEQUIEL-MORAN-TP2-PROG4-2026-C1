@@ -17,4 +17,5 @@ export interface Publicacion {
   likes?: string[];
   cantidadLikes?: number;
   activo?: boolean;
+  cantidadComentarios?: number;
 }

@@ -4,18 +4,46 @@ import { Login } from './pages/login/login';
 import { Publicaciones } from './pages/publicaciones/publicaciones';
 import { Register } from './pages/register/register';
 import { MiPerfil } from './pages/mi-perfil/mi-perfil';
+import { PublicacionDetalle } from './pages/publicacion-detalle/publicacion-detalle';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: Home,
     children: [
-      { path: '', component: Login },
-      { path: 'register', component: Register },
-      { path: 'publicaciones', component: Publicaciones },
-      { path: 'perfil', component: MiPerfil }
+      {
+        path: '',
+        redirectTo: 'publicaciones',
+        pathMatch: 'full'
+      },
+      {
+        path: 'login',
+        component: Login
+      },
+      {
+        path: 'register',
+        component: Register
+      },
+      {
+        path: 'publicaciones',
+        component: Publicaciones,
+        canActivate: [authGuard]
+      },
+      {
+        path: 'publicaciones/:id',
+        component: PublicacionDetalle,
+        canActivate: [authGuard]
+      },
+      {
+        path: 'perfil',
+        component: MiPerfil,
+        canActivate: [authGuard]
+      }
     ]
   },
-
-  { path: '**', redirectTo: '' }
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];

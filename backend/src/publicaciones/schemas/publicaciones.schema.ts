@@ -8,9 +8,6 @@ export type PublicacionDocument = Publicaciones & Document;
 export class Publicaciones {
 
     @Prop({ required: true })
-    titulo!: string;
-
-    @Prop({ required: true })
     descripcion!: string;
 
     @Prop()
@@ -27,6 +24,9 @@ export class Publicaciones {
 
     @Prop({ default: 0 })
     cantidadLikes!: number;
+
+    @Prop({ default: 0 })
+    cantidadComentarios!: number;
 }
 
 export const PublicacionesSchema = SchemaFactory.createForClass(Publicaciones);

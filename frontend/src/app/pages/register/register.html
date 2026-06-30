@@ -1,6 +1,6 @@
 <div class="card border-0 shadow-lg rounded-4">
 
-  <div class="card-body p-5">
+  <div class="card-body p-4 p-md-5">
 
     <ul class="nav nav-pills nav-fill mb-4 bg-light rounded-3 p-1">
       <li class="nav-item"> <a class="nav-link fw-semibold" routerLink="/login"> Ingresar </a> </li>
@@ -9,15 +9,19 @@
     </ul>
 
     <h2 class="text-center fw-bold mb-2">Crear cuenta</h2>
-    <p class="text-center text-muted mb-4"> Unite a la comunidad de Nexo</p>
+    <!-- <p class="text-center text-muted mb-4"> Unite a la comunidad de Nexo</p> -->
 
     <form [formGroup]="formRegistro" (ngSubmit)="registro()">
 
-      <div class="d-flex align-items-center gap-4 mb-4">
+      <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">
         <img [src]="previewImagen || 'https://placehold.co/120x120'"class="rounded-circle border shadow-sm flex-shrink-0" width="120" height="120" alt="Perfil">
         <div class="flex-grow-1">
           <label class="form-label fw-semibold"> Foto de perfil </label>
-          <input type="file" class="form-control" accept="image/*" (change)="seleccionarImagen($event)">
+          <input #fileInput type="file" accept="image/*" hidden (change)="seleccionarImagen($event)">
+          <button type="button" class="btn btn-outline-primary" (click)="fileInput.click()"> Elegir foto </button>
+          @if(previewImagen){
+            <small class="text-success d-block mt-2"> ✓ Imagen seleccionada </small>
+          }
           <div class="form-text"> JPG, PNG o WEBP</div>
           @if(formRegistro.controls.imagenPerfil.invalid && formRegistro.controls.imagenPerfil.touched){
             <small class="text-danger d-block"> Debe seleccionar una imagen </small>

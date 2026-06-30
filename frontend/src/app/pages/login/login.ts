@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 export class Login {
   authService = inject(AuthService);
   router = inject(Router);
+  session = inject(SessionService);
   mensajeError = signal('');
   cargando = signal(false);
 
@@ -35,10 +37,11 @@ export class Login {
       password: this.formLogin.value.password!
     })
     .subscribe({
-
-      next: (resp: any) => {
-        this.cargando.set(false);
-        this.authService.guardarUsuario(resp.usuario);
+      next: (resp:any) => {
+        this.authService.guardarToken(resp.token);
+        this.authService.guardarUsuario(resp.usuario, resp.token);
+        this.authService.cargandoSesion.set(false);
+        this.session.iniciarSesion();
         this.router.navigate(['/publicaciones']);
       },
       error: (err) => {
@@ -79,5 +82,4 @@ export class Login {
 
     }, 3000);
   }
-
 }

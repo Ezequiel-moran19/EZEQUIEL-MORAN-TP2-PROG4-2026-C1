@@ -17,28 +17,25 @@ export class PublicacionesService {
     );
   }
 
+  obtenerPublicacionId(id:string){
+    return this.http.get<Publicacion>(
+      `${this.api}/${id}`
+    );
+  }
+
   crearPublicacion(formData: FormData) {
     return this.http.post(this.api, formData);
   }
 
-  darLike(id: string, usuarioId: string) {
-    return this.http.post(`${this.api}/${id}/like`, {
-      usuarioId
-    });
+  eliminarPublicacion(id:string){
+    return this.http.delete(`${this.api}/${id}`);
   }
 
-  quitarLike(id: string, usuarioId: string) {
-    return this.http.delete(`${this.api}/${id}/like`, {
-      body: { usuarioId }
-    });
+  darLike(id:string){
+    return this.http.post(`${this.api}/${id}/like`,{});
   }
 
-  eliminarPublicacion( id: string, usuarioId: string, perfil: string ) {
-    return this.http.delete(`${this.api}/${id}`, {
-      body: {
-        usuarioId,
-        perfil
-      }
-    });
+  quitarLike(id:string){
+    return this.http.delete(`${this.api}/${id}/like`);
   }
 }

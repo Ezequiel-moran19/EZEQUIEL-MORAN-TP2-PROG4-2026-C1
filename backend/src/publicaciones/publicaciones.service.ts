@@ -11,43 +11,36 @@ export class PublicacionesService {
 
   constructor(@InjectModel(Publicaciones.name) private publicacionesModel: Model<Publicaciones>) { }
 
-  create(dto: CreatePublicacionesDto, archivo?: Express.Multer.File) {
+  create(dto: CreatePublicacionesDto, usuarioId: string, archivo?: Express.Multer.File) {
     const nuevaPublicacion = {
-      ...dto,
-      ...(archivo && { imagen: archivo.path })
+        descripcion: dto.descripcion,
+        autor: usuarioId,
+        ...(archivo && { imagen: archivo.path }),
     };
     return new this.publicacionesModel(nuevaPublicacion)
-    .save()
-    .then(pub => pub.populate(
-      'autor',
-      'nombre apellido nombreUsuario imagenPerfil'
-    ));
+      .save()
+      .then(pub => pub.populate('autor', 'nombre apellido nombreUsuario imagenPerfil'));
   }
 
   async findAll(orden?: string, offset = 0, limit = 10) {
 
     const filtro: any = { activo: true };
-
-    let query = this.publicacionesModel.find(filtro).populate('autor','nombre apellido nombreUsuario imagenPerfil');
+    let query = this.publicacionesModel.find(filtro).populate('autor', 'nombre apellido nombreUsuario imagenPerfil');
 
     if (orden === 'likes') {
-      query = query.sort({
-        cantidadLikes: -1
-      });
-
+      query = query.sort({ cantidadLikes: -1 });
     } else if (orden === 'antiguas') {
-      query = query.sort({
-        createdAt: 1
-      });
-
+      query = query.sort({ createdAt: 1 });
     } else {
-      query = query.sort({
-        createdAt: -1
-      });
-
+      query = query.sort({ createdAt: -1 });
     }
-
     return query.skip(offset).limit(limit);
+  }
+
+  async findOne(id: string) {
+
+    return this.publicacionesModel.findById(id)
+      .populate('autor', 'nombre apellido nombreUsuario imagenPerfil');
   }
 
   update(id: number, updatePublicacionesDto: UpdatePublicacionesDto) {

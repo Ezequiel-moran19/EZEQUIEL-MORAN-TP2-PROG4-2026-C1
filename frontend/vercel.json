@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/login",
+      "destination": "/"
+    },
+    {
+      "source": "/register",
+      "destination": "/"
+    },
+    {
+      "source": "/publicaciones",
+      "destination": "/"
+    },
+    {
+      "source": "/publicaciones/:id",
+      "destination": "/"
+    },
+    {
+      "source": "/perfil",
+      "destination": "/"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}

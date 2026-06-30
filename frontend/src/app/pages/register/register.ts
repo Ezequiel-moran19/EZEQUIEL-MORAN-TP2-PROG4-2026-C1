@@ -64,7 +64,7 @@ export class Register {
     this.authService.authRegistro(formData)
       .subscribe({
         next: () => this.registroExitoso(),
-        error: (err) => this.manejarError(err.error)
+        error: (err:any) => this.manejarError(err.error)
       });
   }
 
