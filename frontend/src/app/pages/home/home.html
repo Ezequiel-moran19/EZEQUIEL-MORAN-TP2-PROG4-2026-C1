@@ -1,16 +1,20 @@
-@if (!authService.estaLogueado()) {
+@if (auth.cargandoSesion()) {
+
+  <app-loading></app-loading>
+
+} @else if (!logueado()) {
 
   <div class="container-fluid vh-100">
 
     <div class="row h-100">
 
-      <div class="col-lg-6 p-0">
+      <div class="col-lg-6 p-0 d-none d-lg-block">
         <app-bienvenida></app-bienvenida>
       </div>
 
-      <div class="col-lg-6 d-flex justify-content-center align-items-center bg-light">
+      <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center bg-light">
 
-        <div class="form-wrapper">
+        <div class="form-wrapper w-100">
           <router-outlet></router-outlet>
         </div>
 
@@ -20,14 +24,19 @@
 
   </div>
 
+
 } @else {
 
-  <app-navbar></app-navbar>
 
-  <div class="container mt-4">
+<app-navbar></app-navbar>
 
-    <router-outlet></router-outlet>
+<div class="container mt-4">
 
-  </div>
+  <router-outlet></router-outlet>
+
+</div>
+
+<app-session-modal></app-session-modal>
+
 
 }

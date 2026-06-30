@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Publicacion } from '../../interfaces/publicacion.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-card',
@@ -9,13 +10,15 @@ import { Publicacion } from '../../interfaces/publicacion.interface';
   styleUrl: './post-card.css',
 })
 export class PostCard {
-
+  router = inject(Router);
   @Input() publicacion!: Publicacion;
   @Input() usuarioId!: string;
   @Output() like = new EventEmitter<string>();
   @Output() eliminar = new EventEmitter<string>();
   @Input() perfil!: string;
-  
+
+  @Output() editar = new EventEmitter<string>();
+
   usuarioDioLike(): boolean {
 
     if (!this.usuarioId || !this.publicacion.likes) {
@@ -26,12 +29,17 @@ export class PostCard {
   }
 
   puedeEliminar(): boolean {
+    return (this.publicacion.autor && this.publicacion.autor._id === this.usuarioId || this.perfil === 'administrador');
+  }
 
-    return (
-      this.publicacion.autor &&
-      this.publicacion.autor._id === this.usuarioId ||
-      this.perfil === 'administrador'
-    );
-
+  editarPublicacion(){
+      this.editar.emit(this.publicacion._id!);
+  }
+  
+  verDetalle(){
+    this.router.navigate([
+      '/publicaciones',
+      this.publicacion._id
+    ]);
   }
 }

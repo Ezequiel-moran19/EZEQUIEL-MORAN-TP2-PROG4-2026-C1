@@ -1,26 +1,60 @@
 <div class="container">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="fw-bold mb-1"> Publicaciones </h2>
-      <small class="text-muted"> Compartí tus ideas con la comunidad </small>
+  <div class="row align-items-center g-3 mb-4">
+
+    <!-- Título -->
+    <div class="col-12 col-lg">
+      <h2 class="fw-bold mb-1">Publicaciones</h2>
+      <small class="text-secondary">
+        Compartí tus ideas con la comunidad
+      </small>
     </div>
 
-    <select class="form-select shadow-sm" style="width:180px" (change)="cambiarOrden($event)">
-      <option value="fecha">Más recientes</option>
-      <option value="antiguas">Más antiguas</option>
-      <option value="likes">Más likes</option>
-    </select>
+    <!-- Filtro -->
+    <div class="col-12 col-sm-6 col-lg-auto">
 
-      <button  class="btn btn-primary shadow-sm" (click)="toggleFormulario()">
-        @if(!mostrarFormulario){ ➕ Crear }
-        @else { ✖ Cerrar }
+      <div class="position-relative">
+
+        <i
+          class="bi bi-funnel position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">
+        </i>
+
+        <select
+          class="form-select filtro-select ps-5"
+          (change)="cambiarOrden($event)">
+
+          <option value="fecha">Más recientes</option>
+          <option value="antiguas">Más antiguas</option>
+          <option value="likes">Más populares</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- Botón -->
+    <div class="col-12 col-sm-6 col-lg-auto">
+
+      <button
+        class="btn btn-primary w-100"
+        (click)="toggleFormulario()">
+
+        @if(!mostrarFormulario){
+          ➕ Crear
+        } @else {
+          ✖ Cerrar
+        }
+
       </button>
+
+    </div>
+
   </div>
 
   @if(mostrarFormulario){
     <div class="mb-4">
-      <app-post-form (creada)="publicacionCreada()"> </app-post-form>
+      <app-post-form (creada)="publicacionCreada()"></app-post-form>
     </div>
   }
 
@@ -38,18 +72,32 @@
 
   @if(publicaciones.length === 0){
     <div class="text-center mt-5">
-      <h5 class="text-muted"> No hay publicaciones todavía </h5>
+      <h5 class="text-secondary">
+        No hay publicaciones todavía
+      </h5>
     </div>
   }
 
-  <div class="d-flex justify-content-center gap-3 mt-4">
-    <button  class="btn btn-outline-primary" (click)="anteriorPagina()" [disabled]="pagina === 0">
+  <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+
+    <button
+      class="btn btn-outline-primary"
+      (click)="anteriorPagina()"
+      [disabled]="pagina === 0">
+
       ← Anterior
+
     </button>
 
-    <button class="btn btn-outline-primary" (click)="siguientePagina()" [disabled]="!haySiguiente">
+    <button
+      class="btn btn-outline-primary"
+      (click)="siguientePagina()"
+      [disabled]="!haySiguiente">
+
       Siguiente →
+
     </button>
+
   </div>
 
 </div>

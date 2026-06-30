@@ -13,11 +13,24 @@
   font-weight: 600;
 }
 
-.nav-link:hover{
+.nav-link:hover,
+.nav-link.active{
   color: white !important;
 }
 
 .btn-outline-light{
   border-width: 2px;
   font-weight: 600;
+}
+
+@media (max-width: 991px){
+
+  .navbar-collapse{
+    margin-top: 1rem;
+  }
+
+  .navbar-nav{
+    margin-bottom: 1rem;
+  }
+
 }

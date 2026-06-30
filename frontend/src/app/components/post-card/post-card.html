@@ -1,55 +1,88 @@
-<div class="card shadow-sm border-0 rounded-4 mb-4 post-card">
+<div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+
+  <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+
+    <div class="d-flex align-items-center">
+
+      @if(publicacion.autor.imagenPerfil){
+        <img [src]="publicacion.autor.imagenPerfil" class="rounded-circle" width="42" height="42" style="object-fit: cover;">
+
+      } @else {
+        <div class="rounded-circle bg-secondary" style="width:42px;height:42px;"> </div>
+
+      }
+
+      <div class="ms-3">
+
+        <div class="fw-bold ">
+          {{ publicacion.autor.nombreUsuario }}
+        </div>
+
+      </div>
+
+    </div>
+
+    @if(puedeEliminar()){
+
+      <div class="dropdown">
+
+        <button class="btn btn-sm border-0 fs-4 text-white" data-bs-toggle="dropdown">
+          ⋮
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+
+          <li>
+            <button class="dropdown-item" (click)="editar.emit(publicacion._id!)">
+              ✏ Editar
+            </button>
+          </li>
+
+          <li>
+            <button class="dropdown-item text-danger" (click)="eliminar.emit(publicacion._id!)">
+              🗑 Eliminar
+            </button>
+          </li>
+
+        </ul>
+
+      </div>
+
+    }
+
+  </div>
 
   @if(publicacion.imagen){
-    <img 
-      [src]="publicacion.imagen" 
-      class="card-img-top"
-      alt="imagen publicación">
+    <img [src]="publicacion.imagen" class="card-img-top" alt="Imagen publicación">
   }
 
   <div class="card-body">
 
-    <div class="mb-2">
-      <span class="badge bg-light text-dark">
-        Publicación
-      </span>
-    </div>
+    <div class="d-flex align-items-center gap-3 mb-3">
 
-    <h5 class="card-title fw-bold">
-      {{ publicacion.titulo }}
-    </h5>
-
-    <p class="card-text text-muted">
-      {{ publicacion.descripcion }}
-    </p>
-
-  </div>
-
-  <div class="card-footer bg-white border-0">
-
-    <div class="d-flex justify-content-between align-items-center">
-
-      <button class="btn btn-light border-0 like-btn" (click)="like.emit(publicacion._id!)">
+      <button class="btn btn-sm border-0 p-0 fs-4" (click)="like.emit(publicacion._id!)">
         @if(usuarioDioLike()){
           ❤️
         } @else {
           🤍
         }
-        <span class="ms-2 fw-semibold"> {{ publicacion.likes?.length || 0 }} </span>
       </button>
 
-      @if(puedeEliminar()){
-
-        <button
-          class="btn btn-outline-danger btn-sm rounded-circle"
-          title="Eliminar publicación"
-          (click)="eliminar.emit(publicacion._id!)">
-          🗑
-        </button>
-
-      }
+      <button class="btn btn-sm border-0 p-0 fs-4" (click)="verDetalle()"> 💬 </button>
 
     </div>
+
+    <div class="fw-bold mb-2">
+      {{ publicacion.likes?.length || 0 }} Me gusta
+    </div>
+
+    <p class=" text-secondary"> {{ publicacion.descripcion }} </p>
+
+    <button
+      class="btn btn-link p-0 text-decoration-none text-secondary"
+      (click)="verDetalle()">
+      Ver los {{ publicacion.cantidadComentarios || 0 }} comentarios
+    </button>
 
   </div>
 

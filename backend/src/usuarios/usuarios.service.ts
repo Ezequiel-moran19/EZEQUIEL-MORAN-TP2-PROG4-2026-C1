@@ -1,34 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './schemas/usuario.schema';
 import { Model } from 'mongoose';
+import { EditarPerfilDto } from './dto/editar-perfil.dto';
 
 @Injectable()
 export class UsuariosService {
 
   constructor(@InjectModel(Usuario.name) private usuarioModel: Model<Usuario>) {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
-    const usuarioCreado = new this.usuarioModel(createUsuarioDto);
-    return usuarioCreado.save();
+  async create(datos: Partial<Usuario>) {
+    const usuario = new this.usuarioModel(datos);
+    return usuario.save();
   }
 
   async findAll() {
     return this.usuarioModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
-  }
-
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async editarPerfil(id: string, dto: EditarPerfilDto, archivo?: Express.Multer.File,) {
+    const datos = { ...dto, ...(archivo && { imagenPerfil: archivo.path }),};
+    return this.usuarioModel.findByIdAndUpdate(id, datos, { new: true },);
   }
 
   async buscarPorEmail(email: string) {
@@ -46,5 +38,9 @@ export class UsuariosService {
         { nombreUsuario: usuario }
       ]
     });
+  }
+  
+  async buscarPorId(id: string) {
+    return this.usuarioModel.findById(id);
   }
 }

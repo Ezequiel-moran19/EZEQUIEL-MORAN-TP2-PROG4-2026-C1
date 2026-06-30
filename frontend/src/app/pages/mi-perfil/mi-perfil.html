@@ -1,51 +1,61 @@
-<div class="container">
+<div class="container py-4">
 
-  <div class="rounded-4 shadow overflow-hidden">
-    <div class="bg-primary" style="height: 200px; background: var(--nexo-gradient);"></div>
-  </div>
+  <div class="card profile-card border-0 shadow mb-4">
 
-  <div class="card border-0 shadow mt-n5">
     <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-auto text-center">
-          <img [src]="usuario?.imagenPerfil" class="rounded-circle border border-5 border-white shadow" width="160" height="160">
+      <div class="row align-items-center g-4">
+        <div class="col-12 col-md-auto text-center">
+          <img [src]="usuario?.imagenPerfil" class="profile-avatar rounded-circle shadow" alt="Foto de perfil">
         </div>
-        <div class="col">
+        <div class="col text-center text-md-start">
           <h2 class="fw-bold mb-1"> {{ usuario?.nombre }} </h2>
           <p class="text-muted mb-2"> {{ usuario?.email }} </p>
+          <small class="text-secondary"> @{{ usuario?.nombreUsuario }} </small>
         </div>
-        <div class="col-md-auto mt-3 mt-md-0">
-          <button class="btn btn-primary"> Editar perfil  </button>
+        <div class="col-12 col-md-auto text-center">
+         <button class="btn btn-primary px-4"  data-bs-toggle="modal"  data-bs-target="#editarPerfilModal">
+          Editar perfil
+        </button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row mt-4">
-
-    <div class="col-lg-4">
-      <div class="card border-0 shadow-sm">
+  <div class="row g-4">
+    <div class="col-12 col-lg-4">
+      <div class="card profile-card border-0 shadow h-100">
         <div class="card-body">
-        <h5 class="fw-bold mb-3">Información</h5>
-        <p>📧 {{ usuario?.email }}</p>
-        <p>👤 {{ usuario?.nombre }} {{ usuario?.apellido }}</p>
-        <p>🆔 {{ usuario?.nombreUsuario }}</p>
-        <p>🎂 {{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
-        <p>📝 {{ usuario?.descripcion }}</p>
-        <p>🔐 {{ usuario?.perfil }}</p>
+          <h5 class="fw-bold mb-4"> Información</h5>
+          <div class="mb-3">
+            <small class="text-secondary">Correo: </small> {{ usuario?.email }}
+          </div>
+          <div class="mb-3">
+            <small class="text-secondary">Nombre: </small> {{ usuario?.nombre }} {{ usuario?.apellido }}
+          </div>
+          <div class="mb-3">
+            <small class="text-secondary">Usuario: </small> @{{ usuario?.nombreUsuario }}
+          </div>
+          <div class="mb-3">
+            <small class="text-secondary">Nacimiento: </small> {{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}
+          </div>
+          <div class="mb-3">
+            <small class="text-secondary">Descripción</small> {{ usuario?.descripcion }}
+          </div>
+          <div>
+            <small class="text-secondary">Rol: </small> {{ usuario?.perfil }}
+          </div>
         </div>
       </div>
     </div>
-    
-    <div class="col-lg-8">
-      <div class="card border-0 shadow-sm">
+
+    <div class="col-12 col-lg-8">
+      <div class="card profile-card border-0 shadow">
         <div class="card-body">
-
-          <h4 class="fw-bold mb-3">Publicaciones</h4>
-
-          <p>Cantidad: {{ ultimasPublicaciones.length }}</p>
-
-          @for (post of ultimasPublicaciones; track post._id) {
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0"> Publicacione </h4>
+            <span class="badge bg-primary rounded-pill"> {{ publicaciones.length }} </span>
+          </div>
+          @for(post of publicaciones; track post._id){
             <app-post-card
               [publicacion]="post"
               [usuarioId]="usuario?._id || ''"
@@ -54,10 +64,88 @@
             </app-post-card>
           }
 
+          @if(publicaciones.length===0){
+            <div class="text-center py-5 text-secondary">
+              Todavía no realizaste publicaciones.
+            </div>
+          }
         </div>
       </div>
     </div>
-
   </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="editarPerfilModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
+      <form [formGroup]="formEditar" (ngSubmit)="guardarCambios()">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Editar perfil</h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal">
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label>Nombre</label>
+            <input
+              class="form-control"
+              formControlName="nombre">
+          </div>
+
+          <div class="mb-3">
+            <label>Apellido</label>
+            <input
+              class="form-control"
+              formControlName="apellido">
+          </div>
+
+          <div class="mb-3">
+            <label>Descripción</label>
+            <textarea
+              class="form-control"
+              rows="4"
+              formControlName="descripcion">
+            </textarea>
+          </div>
+
+          <div class="mb-3">
+            <label>Foto de perfil</label>
+
+            <input
+              type="file"
+              class="form-control"
+              (change)="seleccionarImagen($event)">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary">
+            Guardar cambios
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
 </div>

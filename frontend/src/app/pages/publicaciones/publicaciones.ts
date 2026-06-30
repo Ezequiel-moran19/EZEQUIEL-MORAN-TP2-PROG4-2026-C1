@@ -19,7 +19,7 @@ export class Publicaciones implements OnInit {
   haySiguiente = true;
   orden = 'fecha';
   pagina = 0;
-  limite = 3;
+  limite = 5;
 
   publicacionesService = inject(PublicacionesService);
   authService = inject(AuthService);
@@ -51,16 +51,19 @@ export class Publicaciones implements OnInit {
   }
 
   darLike(id: string) {
-    const usuario = this.authService.obtenerUsuarioLogueado();
-    if (!usuario) return;
+
     const publicacion = this.publicaciones.find(p => p._id === id);
+
     if (!publicacion) return;
 
     if (this.usuarioDioLike(publicacion)) {
-      this.publicacionesService.quitarLike(id, usuario._id!)
+      this.publicacionesService
+        .quitarLike(id)
         .subscribe(() => this.cargarPublicaciones());
+
     } else {
-      this.publicacionesService.darLike(id, usuario._id!)
+      this.publicacionesService
+        .darLike(id)
         .subscribe(() => this.cargarPublicaciones());
     }
   }
@@ -74,10 +77,11 @@ export class Publicaciones implements OnInit {
   }
 
   eliminarPublicacion(id: string) {
-    const usuario = this.authService.obtenerUsuarioLogueado();
-    if (!usuario) return;
-    this.publicacionesService.eliminarPublicacion(id, usuario._id!, usuario.perfil)
+
+    this.publicacionesService
+      .eliminarPublicacion(id)
       .subscribe(() => this.cargarPublicaciones());
+
   }
 
   cambiarOrden(event: Event) {
@@ -101,5 +105,9 @@ export class Publicaciones implements OnInit {
       this.pagina--;
       this.cargarPublicaciones();
     }
+  }
+
+  editarPublicacion(id:string){
+   console.log(id);
   }
 }

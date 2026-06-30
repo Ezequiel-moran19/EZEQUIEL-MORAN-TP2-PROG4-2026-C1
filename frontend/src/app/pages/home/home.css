@@ -1,5 +1,12 @@
-/* .form-wrapper{
-  width:100%;
-  max-width:800px;
-  padding:20px;
-} */
+.form-wrapper{
+    width: 100%;
+    max-width: 480px;
+    padding: 1.5rem;
+}
+
+@media (max-width: 991px){
+    .form-wrapper{
+        max-width: 420px;
+        padding: 1rem;
+    }
+}

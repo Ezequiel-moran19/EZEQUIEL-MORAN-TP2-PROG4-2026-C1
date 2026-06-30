@@ -1,114 +1,151 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RegistroDto } from './dto/registro.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-    
+
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly usuariosService: UsuariosService) {}
+  constructor(private readonly usuariosService: UsuariosService, private readonly jwtService: JwtService) {}
 
-    async registro(crearRegistroDto: RegistroDto, archivo: Express.Multer.File) {
+  async registro(crearRegistroDto: RegistroDto, archivo: Express.Multer.File) {
+    try {
+      const existeEmail = await this.usuariosService.buscarPorEmail(crearRegistroDto.email,);
+      if (existeEmail) {
+        throw new HttpException('El email ya está registrado',  HttpStatus.BAD_REQUEST);
+      }
 
-        try {
+      const existeUsuario = await this.usuariosService.buscarPorNombreUsuario(crearRegistroDto.nombreUsuario);
+      if (existeUsuario) {
+        throw new HttpException('El nombre de usuario ya está registrado', HttpStatus.BAD_REQUEST);
+      }
 
-            await this.validarUsuario(crearRegistroDto);
-            this.validarPasswords(crearRegistroDto);
-            this.validarFechaNacimiento(crearRegistroDto.fechaNacimiento);
+      if (crearRegistroDto.password !== crearRegistroDto.repetirPassword) {
+        throw new HttpException('Las contraseñas no coinciden', HttpStatus.BAD_REQUEST,);
+      }
 
-            const hashedPassword = await this.hashearPassword(crearRegistroDto.password);
-            const usuario = this.crearUsuario(crearRegistroDto, hashedPassword, archivo );
-            const usuarioGuardado = await this.usuariosService.create(usuario);
+      const hashedPassword = await bcrypt.hash(crearRegistroDto.password, 10);
+      const { ...datosUsuario } = crearRegistroDto;
+      const usuario = {
+        ...datosUsuario,
+        password: hashedPassword,
+        ...(archivo && { imagenPerfil: archivo.path }),
+      };
+      const usuarioGuardado = await this.usuariosService.create(usuario);
+      const token = this.generarToken(usuarioGuardado);
+      return {
+        usuario: this.removePassword(usuarioGuardado),
+        token,
+        message: 'Usuario registrado correctamente',
+      };
 
-            return {
-                usuario: this.removePassword(usuarioGuardado),
-                message: 'Usuario registrado correctamente',
-            };
+    } catch (error) {
 
-        } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
 
-            if (error instanceof HttpException) {
-                throw error;
-            }
+      throw new HttpException('Error interno del servidor', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
-            throw new HttpException('Error al registrar usuario', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+  async login(email: string, password: string) {
+
+    try {
+
+      console.log('LOGIN DATA:', email);
+
+      const usuario = await this.usuariosService.buscarPorUsuarioOEmail(email);
+
+      console.log('USUARIO:', usuario);
+
+      if (!usuario) {
+        throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED);
+      }
+
+      const esPasswordValida = await bcrypt.compare(password, usuario.password);
+
+      console.log('PASSWORD OK:', esPasswordValida);
+
+      if (!esPasswordValida) {
+        throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED);
+      }
+
+      const token = this.generarToken(usuario);
+
+      console.log('TOKEN GENERADO');
+
+      return {
+        usuario: this.removePassword(usuario),
+        token,
+        message:'Login correcto'
+      };
+
+
+    } catch(error){
+
+      console.log('ERROR LOGIN:', error);
+
+      throw error;
     }
 
-    async login(email: string, password: string) {
+  }
 
-        const usuario = await this.usuariosService.buscarPorUsuarioOEmail(email);
-        if (!usuario) {
-            throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED,);
-        }
+  private generarToken(usuario: any): string {
 
-        const esPasswordValida = await bcrypt.compare(password, usuario.password);
-        if (!esPasswordValida) {
-            throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED,);
-        }
+    const payload = { sub: usuario._id, email: usuario.email, nombreUsuario: usuario.nombreUsuario, perfil: usuario.perfil };
 
-        return {
-            usuario: this.removePassword(usuario),
-            message: 'Login correcto',
-        };
+    return this.jwtService.sign(payload);
+  }
+
+  async autorizar(token: string) {
+    try {
+
+      const payload = this.jwtService.verify(token);
+
+      const usuario = await this.usuariosService.buscarPorId(payload.sub);
+
+      if (!usuario) {
+        throw new HttpException('Usuario no encontrado', HttpStatus.UNAUTHORIZED);
+      }
+
+      return this.removePassword(usuario);
+
+    } catch {
+      throw new HttpException('Token inválido o expirado', HttpStatus.UNAUTHORIZED);
     }
+  }
 
-    private async validarUsuario(dto: RegistroDto) {
+  async refrescar(token: string) {
+    try {
 
-        const existeEmail = await this.usuariosService.buscarPorEmail(dto.email);
+      const payload = this.jwtService.verify(token);
 
-        if (existeEmail) {
-            throw new HttpException('El email ya está registrado', HttpStatus.BAD_REQUEST);
-        }
+      const nuevoToken = this.jwtService.sign({
+        sub: payload.sub,
+        email: payload.email,
+        nombreUsuario: payload.nombreUsuario,
+        perfil: payload.perfil,
+      });
 
-        const existeUsuario = await this.usuariosService.buscarPorNombreUsuario(dto.nombreUsuario);
-        if (existeUsuario) {
-            throw new HttpException('El nombre de usuario ya está registrado', HttpStatus.BAD_REQUEST);
-        }
+      return {
+        token: nuevoToken,
+      };
+
+    } catch {
+      throw new HttpException('Token inválido o expirado', HttpStatus.UNAUTHORIZED);
     }
+  }
 
-    private validarPasswords(dto: RegistroDto) {
+  private removePassword(usuario:any){
 
-        if (dto.password !== dto.repetirPassword) {
-            throw new HttpException('Las contraseñas no coinciden', HttpStatus.BAD_REQUEST);
-        }
-    }
+    const objeto = usuario.toObject 
+      ? usuario.toObject()
+      : usuario;
 
-    private validarFechaNacimiento(fecha: Date) {
+    const {password, ...result} = objeto;
 
-        const fechaNacimiento = new Date(fecha);
-        const hoy = new Date();
-
-        if (fechaNacimiento > hoy) {
-            throw new HttpException('La fecha de nacimiento no puede ser futura', HttpStatus.BAD_REQUEST);
-        }
-
-        let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-
-        if ( hoy.getMonth() < fechaNacimiento.getMonth() ||
-            (hoy.getMonth() === fechaNacimiento.getMonth() && 
-             hoy.getDate() < fechaNacimiento.getDate())) {
-            edad--;
-        }
-
-        if (edad < 13) {
-            throw new HttpException('Debe tener al menos 13 años para registrarse', HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    private async hashearPassword(password: string) {
-        return bcrypt.hash(password, 10);
-    }
-
-    private crearUsuario(dto: RegistroDto, hashedPassword: string, archivo?: Express.Multer.File) {
-
-        const { repetirPassword, ...datosUsuario } = dto;
-        return {
-            ...datosUsuario, password: hashedPassword, imagenPerfil: archivo ? archivo.path : null,
-        };
-    }
-    private removePassword(usuario: any) {
-        const { password, ...result } = usuario.toObject();
-        return result;
-    }
+    return result;
+  }
 }

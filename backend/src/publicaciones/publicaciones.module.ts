@@ -4,6 +4,7 @@ import { PublicacionesController } from './publicaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Publicaciones, PublicacionesSchema } from './schemas/publicaciones.schema';
 import { Usuario, UsuarioSchema } from '../usuarios/schemas/usuario.schema';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { Usuario, UsuarioSchema } from '../usuarios/schemas/usuario.schema';
     {
       name: Usuario.name,
       schema: UsuarioSchema
-    }])
+    }]),
+    AuthModule
   ],
   controllers: [PublicacionesController],
   providers: [PublicacionesService],
