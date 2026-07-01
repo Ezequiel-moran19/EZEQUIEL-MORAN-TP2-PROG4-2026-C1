@@ -33,8 +33,8 @@ export class RegistroDto {
   descripcion!: string;
 
   @IsOptional()
-  perfil?: string;
-
-  @IsOptional()
   imagenPerfil?: string;
 }
+
+  // @IsOptional()
+  // perfil?: string;

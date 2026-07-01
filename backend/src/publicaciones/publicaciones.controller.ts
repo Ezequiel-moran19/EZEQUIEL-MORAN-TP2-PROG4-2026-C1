@@ -2,24 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Upl
 import { PublicacionesService } from './publicaciones.service';
 import { CreatePublicacionesDto } from './dto/create-publicaciones.dto';
 import { UpdatePublicacionesDto } from './dto/update-publicaciones.dto';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary from '../config/cloudinary';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async () => ({ folder: 'publicaciones', allowed_formats: ['jpg', 'jpeg', 'png', 'webp'] }),
-});
+import { AdminGuard } from '../auth/admin.guard';
+import { crearStorage } from '../config/cloudinary.storage';
 
 @Controller('publicaciones')
 export class PublicacionesController {
+
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('imagen', { storage }))
+  @UseInterceptors(FileInterceptor('imagen', { storage: crearStorage('publicaciones') }))
   create(
     @Body() dto: CreatePublicacionesDto,
     @UploadedFile() archivo: Express.Multer.File,
@@ -73,6 +69,16 @@ export class PublicacionesController {
   @Get(':id')
   findOne(@Param('id') id:string){
     return this.publicacionesService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/baja')
+  darDeBaja(@Param('id') id: string, @Req() req: any) {
+    return this.publicacionesService.remove(
+      id,
+      req.user._id,
+      req.user.perfil,
+    );
   }
   
 }

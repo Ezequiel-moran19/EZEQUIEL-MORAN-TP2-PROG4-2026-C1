@@ -115,19 +115,10 @@
         }
       </div>
 
-      <div class="mb-4">
-        <label class="form-label fw-semibold"> Perfil</label>
-        <select class="form-select" formControlName="perfil">
-          <option value="usuario"> Usuario </option>
-          <option value="administrador"> Administrador </option>
-        </select>
-      </div>
-
-
       @if(mensajeError()){
         <div class="alert alert-danger"> {{ mensajeError() }} </div>
       }
-
+      
       @if(mensajeExito()){
         <div class="alert alert-success">{{ mensajeExito() }} </div>
       }
@@ -136,9 +127,18 @@
         @if(cargando()){ Registrando... }
         @else{ Registrarse }
       </button>
-
+      
     </form>
 
   </div>
 
 </div>
+
+
+      <!-- <div class="mb-4">
+        <label class="form-label fw-semibold"> Perfil</label>
+        <select class="form-select" formControlName="perfil">
+          <option value="usuario"> Usuario </option>
+          <option value="administrador"> Administrador </option>
+        </select>
+      </div> -->

@@ -19,14 +19,10 @@
           class="bi bi-funnel position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">
         </i>
 
-        <select
-          class="form-select filtro-select ps-5"
-          (change)="cambiarOrden($event)">
-
+        <select class="form-select filtro-select ps-5" (change)="cambiarOrden($event)">
           <option value="fecha">Más recientes</option>
           <option value="antiguas">Más antiguas</option>
           <option value="likes">Más populares</option>
-
         </select>
 
       </div>
@@ -36,9 +32,7 @@
     <!-- Botón -->
     <div class="col-12 col-sm-6 col-lg-auto">
 
-      <button
-        class="btn btn-primary w-100"
-        (click)="toggleFormulario()">
+      <button class="btn btn-primary w-100" (click)="toggleFormulario()">
 
         @if(!mostrarFormulario){
           ➕ Crear
@@ -65,7 +59,7 @@
         [usuarioId]="authService.obtenerUsuarioLogueado()?._id || ''"
         [perfil]="authService.obtenerUsuarioLogueado()?.perfil || ''"
         (like)="darLike($event)"
-        (eliminar)="eliminarPublicacion($event)">
+        (baja)="darDeBajaPublicacion($event)">
       </app-post-card>
     }
   </div>
@@ -80,22 +74,12 @@
 
   <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
 
-    <button
-      class="btn btn-outline-primary"
-      (click)="anteriorPagina()"
-      [disabled]="pagina === 0">
-
+    <button class="btn btn-outline-primary" (click)="anteriorPagina()" [disabled]="pagina === 0">
       ← Anterior
-
     </button>
 
-    <button
-      class="btn btn-outline-primary"
-      (click)="siguientePagina()"
-      [disabled]="!haySiguiente">
-
+    <button class="btn btn-outline-primary" (click)="siguientePagina()" [disabled]="!haySiguiente">
       Siguiente →
-
     </button>
 
   </div>

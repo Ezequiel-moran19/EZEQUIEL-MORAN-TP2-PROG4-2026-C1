@@ -1,0 +1,107 @@
+<div class="container d-flex justify-content-center align-items-center py-5">
+
+    <div class="card shadow-lg border-0 formulario-card p-4">
+
+        <h2 class="text-center fw-bold titulo"> Crear usuario </h2>
+        <p class="text-center text-secondary"> Completa los datos del nuevo usuario </p>
+
+        @if(mensaje){
+        <div class="alert"
+            [class.alert-success]="tipoMensaje === 'success'"
+            [class.alert-danger]="tipoMensaje === 'error'">
+            {{ mensaje }}
+        </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="crear()">
+
+            <input class="form-control mb-1" placeholder="Nombre" formControlName="nombre">
+
+            @if(form.controls.nombre.touched && form.controls.nombre.invalid){
+            <div class="text-danger small mb-3">
+                @if(form.controls.nombre.errors?.['required']){
+                    El nombre es obligatorio.
+                }
+                @if(form.controls.nombre.errors?.['minlength']){
+                 Debe tener al menos 2 caracteres.
+                }
+            </div>
+
+            }
+
+            <input class="form-control mb-1" placeholder="Apellido" formControlName="apellido">
+
+            @if(form.controls.apellido.touched && form.controls.apellido.invalid){
+            <div class="text-danger small mb-3">
+                @if(form.controls.apellido.errors?.['required']){
+                    El apellido es obligatorio.
+                }
+            </div>
+
+            }
+
+            <input class="form-control mb-1" placeholder="Email" formControlName="email">
+
+            @if(form.controls.email.touched && form.controls.email.invalid){
+            <div class="text-danger small mb-3">
+                @if(form.controls.email.errors?.['required']){
+                 El email es obligatorio.
+                }
+                @if(form.controls.email.errors?.['email']){
+                Debe ingresar un email válido.
+                }
+            </div>
+
+            }
+
+            <input class="form-control mb-1" placeholder="Nombre usuario" formControlName="nombreUsuario">
+
+            @if(form.controls.nombreUsuario.touched && form.controls.nombreUsuario.invalid){
+            <div class="text-danger small mb-3">
+                @if(form.controls.nombreUsuario.errors?.['required']){
+                    El nombre de usuario es obligatorio.
+                }
+                @if(form.controls.nombreUsuario.errors?.['minlength']){
+                 Debe tener al menos 4 caracteres.
+                }
+            </div>
+            }
+
+            <input class="form-control mb-1" type="password" placeholder="Password" formControlName="password">
+
+            @if(form.controls.password.touched && form.controls.password.invalid){
+            <div class="text-danger small mb-3">
+
+                @if(form.controls.password.errors?.['required']){
+                 La contraseña es obligatoria.
+                }
+                @if(form.controls.password.errors?.['minlength']){
+                 Debe tener al menos 6 caracteres.
+                }
+            </div>
+
+            }
+
+            <div class="d-flex justify-content-around mb-4 mt-3">
+
+                <label class="text-light">
+                    <input type="radio" value="usuario" formControlName="perfil">
+                    Usuario
+                </label>
+
+                <label class="text-light">
+                    <input type="radio" value="administrador" formControlName="perfil">
+                    Administrador
+                </label>
+
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">
+                Crear usuario
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

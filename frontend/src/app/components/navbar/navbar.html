@@ -13,6 +13,18 @@
         <a routerLink="/perfil" routerLinkActive="active" class="nav-link">
           Mi Perfil
         </a>
+
+         @if(usuario()?.perfil === 'administrador') {
+
+          <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="nav-link">
+            Usuarios
+          </a>
+
+          <a routerLink="/dashboard/estadisticas" routerLinkActive="active" class="nav-link">
+            Estadísticas
+          </a>
+        }
+
       </div>
 
       <div class="d-flex align-items-center gap-3">

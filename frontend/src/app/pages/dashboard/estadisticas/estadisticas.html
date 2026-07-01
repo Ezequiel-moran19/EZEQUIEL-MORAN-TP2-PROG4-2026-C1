@@ -1,0 +1,73 @@
+<div class="container mt-4">
+
+    <h2 class="mb-4">Estadísticas</h2>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <label class="form-label"> Desde </label>
+            <input  type="date"  class="form-control" (input)="desde=$any($event.target).value">
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label"> Hasta </label>
+            <input  type="date" class="form-control" (input)="hasta=$any($event.target).value">
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button  class="btn btn-primary w-100" (click)="cargarGraficos()">
+                Buscar
+            </button>
+        </div>
+
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-header text-center">
+            Publicaciones por usuario
+        </div>
+
+        <div class="card-body d-flex justify-content-center align-items-center">
+
+            <div style="height:300px; width:700px">
+                <canvas id="graficoUsuarios"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-header text-center">
+            Comentarios por fecha
+        </div>
+
+        <div class="card-body d-flex justify-content-center align-items-center">
+
+            <div style="height:300px; width:700px">
+                <canvas id="graficoComentarios"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-header text-center">
+            Comentarios por publicación
+        </div>
+
+        <div class="card-body d-flex justify-content-center align-items-center">
+
+            <div style="height:350px; width:350px">
+                <canvas id="graficoPublicaciones"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

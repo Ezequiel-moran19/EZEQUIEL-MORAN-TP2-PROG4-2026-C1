@@ -1,0 +1,30 @@
+.formulario-card{
+    width:450px;
+    background:#1e293b;
+}
+
+.titulo{
+    background:var(--nexo-gradient);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.formulario-card .form-control{
+    background:#0f172a;
+    border-color:#334155;
+    color:white;
+}
+
+.formulario-card .form-control:focus{
+    border-color:var(--nexo-primary);
+    box-shadow:0 0 0 .25rem rgba(37,99,235,.25);
+}
+
+.btn-primary{
+    background:var(--nexo-gradient);
+    border:none;
+}
+
+.btn-primary:hover{
+    opacity:.9;
+}
