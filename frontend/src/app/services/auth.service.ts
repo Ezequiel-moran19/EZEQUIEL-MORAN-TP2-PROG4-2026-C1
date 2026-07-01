@@ -39,6 +39,7 @@ export class AuthService {
   }
 
   autorizar() {
+    console.log('ejecutando autorizar');
     return this.http.post<Usuario>(
       `${environment.apiUrl}/auth/autorizar`,
       {},

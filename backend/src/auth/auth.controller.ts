@@ -36,7 +36,11 @@ export class AuthController {
   @Post('autorizar')
   autorizar(@Req() req: Request) {
 
+    console.log('COOKIE:', req.cookies);
+
     const token = req.cookies?.token;
+
+    console.log('TOKEN:', token);
 
     if(!token){
       throw new UnauthorizedException();
