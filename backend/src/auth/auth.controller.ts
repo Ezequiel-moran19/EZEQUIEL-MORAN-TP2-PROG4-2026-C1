@@ -36,25 +36,12 @@ export class AuthController {
   @Post('autorizar')
   autorizar(@Req() req: Request) {
 
-    console.log('---- AUTORIZAR ----');
-
-    console.log('cookies:', req.cookies);
-
     const token = req.cookies?.token;
 
-    console.log('token:', token);
-
-
     if(!token){
-      console.log('NO HAY TOKEN');
       throw new UnauthorizedException();
     }
-
-
-    console.log('llamando authService');
-
     return this.authService.autorizar(token);
-
   }
 
   @Post('refrescar')
