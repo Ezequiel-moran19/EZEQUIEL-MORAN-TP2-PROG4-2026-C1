@@ -35,14 +35,21 @@ export class Publicaciones implements OnInit {
 
   cargarPublicaciones() {
 
-    this.publicacionesService.obtenerPublicaciones(this.orden, this.pagina * this.limite, this.limite
-      ).subscribe({
-        next:(data)=>{
-          this.publicaciones = [...data];
-          this.haySiguiente = data.length === this.limite;
-          this.cdr.detectChanges();
-        }
-      });
+    this.publicacionesService.obtenerPublicaciones(
+      this.orden,
+      this.pagina * this.limite,
+      this.limite + 1
+    )
+    .subscribe({
+      next:(data)=>{
+
+        this.haySiguiente = data.length > this.limite;
+
+        this.publicaciones = data.slice(0, this.limite);
+
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   publicacionCreada() {
@@ -112,11 +119,3 @@ export class Publicaciones implements OnInit {
    console.log(id);
   }
 }
-
-  // eliminarPublicacion(id: string) {
-
-  //   this.publicacionesService
-  //     .eliminarPublicacion(id)
-  //     .subscribe(() => this.cargarPublicaciones());
-
-  // }
