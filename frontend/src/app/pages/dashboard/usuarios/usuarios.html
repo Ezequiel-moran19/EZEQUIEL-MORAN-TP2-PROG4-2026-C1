@@ -1,0 +1,69 @@
+<div class="container">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Usuarios</h2>
+    <a routerLink="/dashboard/usuarios/crear" class="btn btn-primary"> Nuevo usuario </a>
+  </div>
+
+  <table class="table table-striped shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Perfil</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      @for(usuario of usuarios; track usuario._id){
+      <tr>
+        <td> {{usuario.nombreUsuario}} </td>
+        <td> {{usuario.email}} </td>
+
+        <td>
+          @if(usuario.perfil === 'administrador'){
+            <span class="badge bg-primary"> Administrador </span>
+          }
+          @else{
+            <span class="badge bg-secondary"> Usuario </span>
+          }
+        </td>
+
+        <td>
+
+          @if(usuario.activo){
+            <span class="badge bg-success"> Activo </span>
+          }
+          @else{
+            <span class="badge bg-danger"> Deshabilitado </span>
+          }
+        </td>
+
+        <td>
+
+          @if(usuario.activo){
+
+            <button class="btn btn-danger btn-sm" (click)="cambiarEstado(usuario)">
+              Dar de baja
+            </button>
+          }
+          @else{
+            <button class="btn btn-success btn-sm" (click)="cambiarEstado(usuario)">
+              Rehabilitar
+            </button>
+          }
+
+        </td>
+
+      </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>

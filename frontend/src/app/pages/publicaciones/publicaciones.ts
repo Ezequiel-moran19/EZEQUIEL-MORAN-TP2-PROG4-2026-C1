@@ -76,12 +76,13 @@ export class Publicaciones implements OnInit {
     return publicacion.likes.includes(usuario._id!);
   }
 
-  eliminarPublicacion(id: string) {
+  darDeBajaPublicacion(id:string){
 
     this.publicacionesService
-      .eliminarPublicacion(id)
-      .subscribe(() => this.cargarPublicaciones());
-
+    .darDeBajaPublicacion(id)
+    .subscribe(()=>{
+      this.cargarPublicaciones();
+    });
   }
 
   cambiarOrden(event: Event) {
@@ -111,3 +112,11 @@ export class Publicaciones implements OnInit {
    console.log(id);
   }
 }
+
+  // eliminarPublicacion(id: string) {
+
+  //   this.publicacionesService
+  //     .eliminarPublicacion(id)
+  //     .subscribe(() => this.cargarPublicaciones());
+
+  // }

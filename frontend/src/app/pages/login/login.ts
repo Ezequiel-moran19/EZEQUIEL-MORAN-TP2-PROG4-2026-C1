@@ -47,7 +47,9 @@ export class Login {
       error: (err) => {
         this.cargando.set(false);
 
-        if (err.status === 401 || err.status === 400) {
+        if (err.error?.message === 'Usuario deshabilitado') {
+          this.mensajeError.set('Usuario deshabilitado');
+        } else if (err.status === 401 || err.status === 400) {
           this.mensajeError.set('Usuario o contraseña incorrectos');
         } else {
           this.mensajeError.set('Ocurrió un error al iniciar sesión');

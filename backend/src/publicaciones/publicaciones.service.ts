@@ -93,4 +93,12 @@ export class PublicacionesService {
     publicacion.activo = false;
     return publicacion.save();
   }
+
+  async darDeBaja(id: string) {
+  return this.publicacionesModel.findByIdAndUpdate(
+    id,
+    { activo: false },
+    { new: true }
+  );
+}
 }

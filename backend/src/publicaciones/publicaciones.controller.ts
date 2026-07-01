@@ -7,6 +7,7 @@ import cloudinary from '../config/cloudinary';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -73,6 +74,16 @@ export class PublicacionesController {
   @Get(':id')
   findOne(@Param('id') id:string){
     return this.publicacionesService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/baja')
+  darDeBaja(@Param('id') id: string, @Req() req: any) {
+    return this.publicacionesService.remove(
+      id,
+      req.user._id,
+      req.user.perfil,
+    );
   }
   
 }

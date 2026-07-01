@@ -16,8 +16,8 @@ export class PostCard {
   @Output() like = new EventEmitter<string>();
   @Output() eliminar = new EventEmitter<string>();
   @Input() perfil!: string;
-
   @Output() editar = new EventEmitter<string>();
+  @Output() baja = new EventEmitter<string>();
 
   usuarioDioLike(): boolean {
 

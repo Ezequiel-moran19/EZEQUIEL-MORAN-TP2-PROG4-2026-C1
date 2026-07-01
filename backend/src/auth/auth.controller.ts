@@ -9,14 +9,15 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  private crearCookie(res: Response, token: string){
 
+  private crearCookie(res: Response, token: string){
     res.cookie('token', token, {
       httpOnly:true,
       maxAge:15 * 60 * 1000,
       sameSite:'lax'
     });
   }
+  
   @Post('registro')
   @UseInterceptors(FileInterceptor('imagenPerfil', { storage }))
   async registro(@Body() dto: RegistroDto, @UploadedFile() archivo: Express.Multer.File, @Res({ passthrough: true }) res: Response) {
@@ -71,3 +72,9 @@ export class AuthController {
 
   }
 }
+
+  // res.cookie('token', token, {
+  //   httpOnly: true,
+  //   maxAge: 20 * 1000,
+  //   sameSite: 'lax'
+  // });

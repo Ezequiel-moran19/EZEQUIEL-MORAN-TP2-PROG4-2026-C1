@@ -30,6 +30,7 @@ export class AuthService {
       const usuario = {
         ...datosUsuario,
         password: hashedPassword,
+        perfil:'usuario',
         ...(archivo && { imagenPerfil: archivo.path }),
       };
       const usuarioGuardado = await this.usuariosService.create(usuario);
@@ -54,27 +55,24 @@ export class AuthService {
 
     try {
 
-      console.log('LOGIN DATA:', email);
-
       const usuario = await this.usuariosService.buscarPorUsuarioOEmail(email);
-
-      console.log('USUARIO:', usuario);
-
       if (!usuario) {
         throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED);
       }
 
+      if (!usuario.activo) {
+        throw new HttpException(
+          'Usuario deshabilitado',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
       const esPasswordValida = await bcrypt.compare(password, usuario.password);
-
-      console.log('PASSWORD OK:', esPasswordValida);
-
       if (!esPasswordValida) {
         throw new HttpException('Credenciales inválidas', HttpStatus.UNAUTHORIZED);
       }
 
       const token = this.generarToken(usuario);
-
-      console.log('TOKEN GENERADO');
 
       return {
         usuario: this.removePassword(usuario),
@@ -82,10 +80,7 @@ export class AuthService {
         message:'Login correcto'
       };
 
-
     } catch(error){
-
-      console.log('ERROR LOGIN:', error);
 
       throw error;
     }
@@ -139,13 +134,8 @@ export class AuthService {
   }
 
   private removePassword(usuario:any){
-
-    const objeto = usuario.toObject 
-      ? usuario.toObject()
-      : usuario;
-
+    const objeto = usuario.toObject ? usuario.toObject() : usuario;
     const {password, ...result} = objeto;
-
     return result;
   }
 }

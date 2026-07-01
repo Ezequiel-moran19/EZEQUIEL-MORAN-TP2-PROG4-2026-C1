@@ -3,91 +3,87 @@
     <div class="mx-auto" style="max-width:650px;">
 
         <div class="mb-4">
-            <button  class="btn btn-link text-decoration-none fw-semibold ps-0"  (click)="volver()">
+            <button class="btn btn-link text-decoration-none fw-semibold ps-0" (click)="volver()">
                 ← Volver
             </button>
         </div>
 
         @if(publicacion){
 
-            <div class="border-bottom pb-4 mb-4">
+        <div class="border-bottom pb-4 mb-4">
 
-                @if(publicacion.imagen){
-                    <img  [src]="publicacion.imagen" class="img-fluid rounded-4 d-block mx-auto mb-3"
-                    style="max-width:650px; max-height:500px; width:100%; object-fit:cover;"
-                    alt="Imagen publicación">
+            @if(publicacion.imagen){
+            <img [src]="publicacion.imagen" class="img-fluid rounded-4 d-block mx-auto mb-3"
+                style="max-width:650px; max-height:500px; width:100%; object-fit:cover;" alt="Imagen publicación">
+            }
+            <h2 class="fw-bold mb-2"> {{ publicacion.titulo }} </h2>
+            <p class="text-secondary mb-4"> Publicado por: <strong> {{ publicacion.autor.nombreUsuario }} </strong> </p>
+            <p class="fs-5"> {{ publicacion.descripcion }} </p>
+
+        </div>
+
+        <h3 class="fw-bold mb-4"> 💬 Comentarios </h3>
+
+        <form [formGroup]="formComentario" (ngSubmit)="crearComentario()" class="mb-4">
+            <textarea rows="3" class="form-control" formControlName="mensaje"
+                placeholder="Escribí un comentario..."> </textarea>
+            @if(formComentario.value.mensaje?.trim()){
+            <button type="submit" class="btn btn-primary mt-2"> Publicar </button>
+            }
+        </form>
+
+        @if(comentarios.length > 0){
+
+        @for(comentario of comentarios; track comentario._id){
+
+        <div class="card shadow-sm border-0 rounded-3 mb-3">
+
+            <div class="card-body">
+
+                <strong> {{ comentario.autor.nombreUsuario }} </strong>
+
+                @if(editandoId === comentario._id){
+
+                <form [formGroup]="formEditar" class="mt-3">
+                    <textarea class="form-control" formControlName="mensaje"> </textarea>
+                    <button type="button" class="btn btn-success btn-sm mt-2" (click)="guardarEdicion()"> Guardar </button>
+                    <button type="button" class="btn btn-secondary btn-sm mt-2 ms-2" (click)="cancelarEdicion()"> Cancelar </button>
+                </form>
+
+                }@else{
+
+                <p class="mt-2 mb-1"> {{ comentario.mensaje }} </p>
+
+                @if(comentario.modificado){
+                <small class="text-muted"> Editado </small>
                 }
-                <h2 class="fw-bold mb-2"> {{ publicacion.titulo }} </h2>
-                <p class="text-secondary mb-4"> Publicado por: <strong> {{ publicacion.autor.nombreUsuario }} </strong> </p>
-                <p class="fs-5"> {{ publicacion.descripcion }} </p>
+
+                @if(usuarioActual?._id === comentario.autor._id){
+                <div>
+                    <button class="btn btn-link btn-sm p-0" (click)="editar(comentario)"> Editar </button>
+                </div>
+                }
+                }
 
             </div>
 
-            <h3 class="fw-bold mb-4"> 💬 Comentarios </h3>
+        </div>
+        }
 
-            <form [formGroup]="formComentario" (ngSubmit)="crearComentario()" class="mb-4">
+        }@else{
 
-                <textarea rows="3" class="form-control" formControlName="mensaje" placeholder="Escribí un comentario..."> </textarea>
+        <div class="alert alert-light border text-center">
+            Todavía no hay comentarios. Sé el primero en comentar.
+        </div>
+        }
 
-                @if(formComentario.value.mensaje?.trim()){
-                    <button  type="submit" class="btn btn-primary mt-2"> Publicar </button>
-                }
+        @if(hayMas){
 
-            </form>
-
-            @if(comentarios.length > 0){
-
-                @for(comentario of comentarios; track comentario._id){
-
-                    <div class="card shadow-sm border-0 rounded-3 mb-3">
-
-                        <div class="card-body">
-
-                            <strong> {{ comentario.autor.nombreUsuario }}  </strong>
-
-                            @if(editandoId === comentario._id){
-
-                                <form  [formGroup]="formEditar" class="mt-3">
-                                    <textarea class="form-control" formControlName="mensaje"> </textarea>
-                                    <button type="button" class="btn btn-success btn-sm mt-2" (click)="guardarEdicion()"> Guardar </button>
-                                    <button type="button" class="btn btn-secondary btn-sm mt-2 ms-2" (click)="cancelarEdicion()"> Cancelar </button>
-                                </form>
-
-                            }@else{
-
-                                <p class="mt-2 mb-1"> {{ comentario.mensaje }} </p>
-
-                                @if(comentario.modificado){
-                                    <small class="text-muted"> Editado </small>
-                                }
-
-                                @if(usuarioActual?._id === comentario.autor._id){
-                                    <div>
-                                        <button class="btn btn-link btn-sm p-0" (click)="editar(comentario)"> Editar </button>
-                                    </div>
-                                }
-                            }
-
-                        </div>
-
-                    </div>
-
-                }
-
-            }@else{
-
-                <div class="alert alert-light border text-center">
-                    Todavía no hay comentarios.
-                    Sé el primero en comentar.
-                </div>
-            }
-
-            @if(hayMas){
-
-                <div class="text-center mt-4">
-                    <button class="btn btn-outline-primary" type="button" (click)="cargarMas()"> Cargar más comentarios </button>
-                </div>
-            }
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary" type="button" (click)="cargarMas()"> Cargar más comentarios
+            </button>
+        </div>
+        }
         }
     </div>
 
