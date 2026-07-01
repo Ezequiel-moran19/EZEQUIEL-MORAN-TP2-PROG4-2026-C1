@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PublicacionesModule } from './publicaciones/publicaciones.module';
 import { EstadisticasModule } from './estadisticas/estadisticas.module';
+import { ComentariosModule } from './comentarios/comentarios.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -18,6 +19,7 @@ imports: [
     UsuariosModule,
     AuthModule,
     EstadisticasModule,
+    ComentariosModule,
 
     MongooseModule.forRoot(
       process.env.MONGO_URL as string,
