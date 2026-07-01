@@ -10,14 +10,10 @@ export const authGuard: CanActivateFn = () => {
   if (auth.logueado()) {
     return true;
   }
-  console.log('--- AUTH GUARD ---');
-
-  console.log('logueado signal:', auth.logueado());
 
   const usuarioLocal = auth.obtenerUsuarioLogueado();
-  console.log('usuario local:', usuarioLocal);
   if (usuarioLocal) {
-     console.log('hay usuario, llamo autorizar');
+
     return auth.autorizar().pipe(
       map(usuario => {
         auth.guardarUsuario(usuario);
