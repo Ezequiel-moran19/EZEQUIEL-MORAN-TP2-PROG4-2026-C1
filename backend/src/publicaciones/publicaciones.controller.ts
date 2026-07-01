@@ -8,19 +8,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
+import { crearStorage } from '../config/cloudinary.storage';
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async () => ({ folder: 'publicaciones', allowed_formats: ['jpg', 'jpeg', 'png', 'webp'] }),
-});
 
 @Controller('publicaciones')
 export class PublicacionesController {
+
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('imagen', { storage }))
+  @UseInterceptors(FileInterceptor('imagen', { storage: crearStorage('publicaciones') }))
   create(
     @Body() dto: CreatePublicacionesDto,
     @UploadedFile() archivo: Express.Multer.File,

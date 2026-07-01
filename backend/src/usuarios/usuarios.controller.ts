@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInt
 import { UsuariosService } from './usuarios.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EditarPerfilDto } from './dto/editar-perfil.dto';
-import { storage } from '../config/cloudinary.storage';
+import { crearStorage } from '../config/cloudinary.storage';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../auth/admin.guard';
 import { CreateUsuarioAdminDto } from './dto/reate-usuario-admin.dto';
@@ -26,7 +26,7 @@ export class UsuariosController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('imagenPerfil', { storage }))
+  @UseInterceptors(FileInterceptor('imagenPerfil', { storage: crearStorage('usuarios') }))
   editarPerfil(
     @Param('id') id: string,
     @Body() dto: EditarPerfilDto,

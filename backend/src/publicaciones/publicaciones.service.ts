@@ -95,10 +95,10 @@ export class PublicacionesService {
   }
 
   async darDeBaja(id: string) {
-  return this.publicacionesModel.findByIdAndUpdate(
-    id,
-    { activo: false },
-    { new: true }
-  );
-}
+    return this.publicacionesModel.findByIdAndUpdate(
+      id,
+      { activo: false },
+      { new: true }
+    );
+  }
 }

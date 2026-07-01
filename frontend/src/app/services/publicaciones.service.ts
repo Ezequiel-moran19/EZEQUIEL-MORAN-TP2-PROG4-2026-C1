@@ -27,6 +27,13 @@ export class PublicacionesService {
     return this.http.post(this.api, formData);
   }
 
+  darDeBajaPublicacion(id:string){
+    return this.http.patch(
+      `${this.api}/${id}/baja`,
+      {}
+    );
+  }
+
   eliminarPublicacion(id:string){
     return this.http.delete(`${this.api}/${id}`);
   }

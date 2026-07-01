@@ -3,26 +3,20 @@ import type { Request, Response } from 'express';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { storage } from '../config/cloudinary.storage';
+import { crearStorage } from '../config/cloudinary.storage';
 import { AuthService } from './auth.service';
+import { crearCookie } from './auth.utils';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
 
-  private crearCookie(res: Response, token: string){
-    res.cookie('token', token, {
-      httpOnly:true,
-      maxAge:15 * 60 * 1000,
-      sameSite:'lax'
-    });
-  }
+  constructor(private readonly authService: AuthService) {}
   
   @Post('registro')
-  @UseInterceptors(FileInterceptor('imagenPerfil', { storage }))
+  @UseInterceptors(FileInterceptor('imagenPerfil', { storage: crearStorage('usuarios') }))
   async registro(@Body() dto: RegistroDto, @UploadedFile() archivo: Express.Multer.File, @Res({ passthrough: true }) res: Response) {
     const respuesta = await this.authService.registro(dto, archivo);
-    this.crearCookie(res, respuesta.token);
+    crearCookie(res, respuesta.token);
 
     return respuesta;
   }
@@ -34,7 +28,7 @@ export class AuthController {
       dto.password,
     );
 
-    this.crearCookie(res, respuesta.token);
+    crearCookie(res, respuesta.token);
 
     return respuesta;
   }
@@ -54,7 +48,7 @@ export class AuthController {
   @Post('refrescar')
   async refrescar(@Req() req: Request, @Res({ passthrough:true }) res: Response){
       const respuesta = await this.authService.refrescar(req.cookies.token);
-      this.crearCookie(res, respuesta.token); 
+      crearCookie(res, respuesta.token); 
       return respuesta;
   }
 
@@ -72,9 +66,3 @@ export class AuthController {
 
   }
 }
-
-  // res.cookie('token', token, {
-  //   httpOnly: true,
-  //   maxAge: 20 * 1000,
-  //   sameSite: 'lax'
-  // });
