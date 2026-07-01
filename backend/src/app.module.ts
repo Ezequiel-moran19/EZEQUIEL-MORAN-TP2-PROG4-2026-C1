@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PublicacionesModule } from './publicaciones/publicaciones.module';
+import { EstadisticasModule } from './estadisticas/estadisticas.module';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,6 +17,7 @@ imports: [
     PublicacionesModule,
     UsuariosModule,
     AuthModule,
+    EstadisticasModule,
 
     MongooseModule.forRoot(
       process.env.MONGO_URL as string,
