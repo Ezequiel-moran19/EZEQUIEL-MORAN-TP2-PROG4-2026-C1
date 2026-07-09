@@ -61,10 +61,7 @@ export class AuthService {
       }
 
       if (!usuario.activo) {
-        throw new HttpException(
-          'Usuario deshabilitado',
-          HttpStatus.UNAUTHORIZED,
-        );
+        throw new HttpException('Usuario deshabilitado', HttpStatus.UNAUTHORIZED );
       }
 
       const esPasswordValida = await bcrypt.compare(password, usuario.password);
