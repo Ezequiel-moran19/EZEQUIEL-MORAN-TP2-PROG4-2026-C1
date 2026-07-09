@@ -8,3 +8,9 @@ screenshot: 'only-on-failure' → guarda una captura si un test falla.
 video: 'retain-on-failure' → guarda un video del test fallido.
 trace: 'retain-on-failure' → genera un trace que luego podés abrir con:
 npx playwright show-trace trace.zip
+
+
+#####################################
+
+ls
+git ls-files
