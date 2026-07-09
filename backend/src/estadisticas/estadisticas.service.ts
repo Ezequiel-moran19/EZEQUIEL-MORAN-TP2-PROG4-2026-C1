@@ -139,7 +139,6 @@ export class EstadisticasService {
         $match: match
       },
 
-
       {
         $addFields: {
           publicacionObj: {
@@ -147,7 +146,6 @@ export class EstadisticasService {
           }
         }
       },
-
 
       {
         $group: {
@@ -157,7 +155,6 @@ export class EstadisticasService {
           }
         }
       },
-
 
       {
         $lookup: {
@@ -172,7 +169,6 @@ export class EstadisticasService {
         $unwind: '$publicacion'
       },
 
-
       {
         $project: {
           _id: 0,
@@ -180,7 +176,6 @@ export class EstadisticasService {
           cantidad: 1
         }
       }
-
 
     ]);
 

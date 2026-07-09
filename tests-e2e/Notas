@@ -1,0 +1,16 @@
+PARA CORRER EL PROGRAMA = npx playwright test --headed
+
+
+######################################
+¿Qué agregan esas opciones?
+reporter: ['list'] → muestra el progreso de los tests en la consola de GitHub Actions.
+screenshot: 'only-on-failure' → guarda una captura si un test falla.
+video: 'retain-on-failure' → guarda un video del test fallido.
+trace: 'retain-on-failure' → genera un trace que luego podés abrir con:
+npx playwright show-trace trace.zip
+
+
+#####################################
+
+ls
+git ls-files
