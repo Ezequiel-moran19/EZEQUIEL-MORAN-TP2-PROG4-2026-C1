@@ -65,11 +65,3 @@ export class SessionService {
     }
   }
 }
-
-  // this.timerModal = setTimeout(() => {
-  //   this.mostrarModal.set(true);
-  // }, 10 * 1000); // 10 segundos
-
-  // this.timerLogout = setTimeout(() => {
-  //   this.cerrarSesion();
-  // }, 20 * 1000); // 20 segundos

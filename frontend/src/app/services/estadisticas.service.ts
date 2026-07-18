@@ -27,5 +27,4 @@ export class EstadisticasService {
       `${this.api}/comentarios-por-publicacion?desde=${desde}&hasta=${hasta}`
     );
   }
-
 }
