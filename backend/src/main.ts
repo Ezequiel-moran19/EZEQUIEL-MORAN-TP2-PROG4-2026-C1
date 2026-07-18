@@ -12,8 +12,8 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors({ origin: process.env.URL_FRONT, credentials: true });
-
+  app.enableCors({ origin: ['https://ezequiel-moran-tp-2-prog-4-2026-fro.vercel.app'], credentials: true });
+https://ezequiel-moran-tp-2-prog-4-2026-fro.vercel.app
   app.useGlobalPipes( new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
 
   await app.init();
