@@ -14,3 +14,20 @@ npx playwright show-trace trace.zip
 
 ls
 git ls-files
+
+-------------------------------------
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "main.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.ts"
+    }
+  ]
+}
