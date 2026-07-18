@@ -26,9 +26,7 @@ export class Home implements OnInit {
     this.auth.autorizar().subscribe({
 
       next: (usuario) => {
-        this.auth.guardarUsuario(usuario);
-        this.auth.logueado.set(true);
-        this.auth.cargandoSesion.set(false);
+        this.auth.setUsuario(usuario);
 
         if(this.router.url === '/login' || this.router.url === '/register' || this.router.url === '/'){
           this.router.navigate(['/publicaciones']);
@@ -36,7 +34,7 @@ export class Home implements OnInit {
       },
 
       error: () => {
-        this.auth.logout();
+        this.auth.setUsuario(null);
         this.auth.cargandoSesion.set(false);
       }
 
@@ -44,3 +42,35 @@ export class Home implements OnInit {
 
   }
 }
+
+// export class Home implements OnInit {
+
+//   auth = inject(AuthService);
+//   router = inject(Router);
+//   logueado = this.auth.logueado;
+
+//   ngOnInit(){
+
+//     this.auth.cargandoSesion.set(true);
+
+//     this.auth.autorizar().subscribe({
+
+//       next: (usuario) => {
+//         this.auth.guardarUsuario(usuario);
+//         this.auth.logueado.set(true);
+//         this.auth.cargandoSesion.set(false);
+
+//         if(this.router.url === '/login' || this.router.url === '/register' || this.router.url === '/'){
+//           this.router.navigate(['/publicaciones']);
+//         }
+//       },
+
+//       error: () => {
+//         this.auth.logout();
+//         this.auth.cargandoSesion.set(false);
+//       }
+
+//     });
+
+//   }
+// }

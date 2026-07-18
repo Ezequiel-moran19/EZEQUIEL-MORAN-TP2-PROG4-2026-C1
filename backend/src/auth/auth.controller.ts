@@ -15,10 +15,15 @@ export class AuthController {
   @Post('registro')
   @UseInterceptors(FileInterceptor('imagenPerfil', { storage: crearStorage('usuarios') }))
   async registro(@Body() dto: RegistroDto, @UploadedFile() archivo: Express.Multer.File, @Res({ passthrough: true }) res: Response) {
+    // const respuesta = await this.authService.registro(dto, archivo);
+    // crearCookie(res, respuesta.token);
+
+    // return respuesta;
     const respuesta = await this.authService.registro(dto, archivo);
+
     crearCookie(res, respuesta.token);
 
-    return respuesta;
+    return { usuario: respuesta.usuario, message: respuesta.message };
   }
 
   @Post('login')
@@ -30,7 +35,8 @@ export class AuthController {
 
     crearCookie(res, respuesta.token);
 
-    return respuesta;
+    // return respuesta;
+    return { usuario: respuesta.usuario, message: respuesta.message };
   }
 
   @Post('autorizar')
@@ -48,20 +54,35 @@ export class AuthController {
   async refrescar(@Req() req: Request, @Res({ passthrough:true }) res: Response){
       const respuesta = await this.authService.refrescar(req.cookies.token);
       crearCookie(res, respuesta.token); 
-      return respuesta;
+      // return respuesta;
+      return { message: 'Token actualizado' };
   }
 
   @Post('logout')
-  logout(@Res() res: Response){
+  logout(@Res({ passthrough: true }) res: Response) {
 
     res.clearCookie('token', {
-      httpOnly:true,
-      sameSite:'lax'
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
     });
 
-    return res.json({
-      mensaje:'Sesion cerrada'
-    });
-
+    return {
+      mensaje: 'Sesion cerrada',
+    };
   }
 }
+
+// @Post('logout')
+  // logout(@Res() res: Response){
+
+  //   res.clearCookie('token', {
+  //     httpOnly:true,
+  //     sameSite:'lax'
+  //   });
+
+  //   return res.json({
+  //     mensaje:'Sesion cerrada'
+  //   });
+
+  // }

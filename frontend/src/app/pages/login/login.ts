@@ -37,12 +37,10 @@ export class Login {
       password: this.formLogin.value.password!
     })
     .subscribe({
-      next: (resp:any) => {
-        this.authService.guardarToken(resp.token);
-        this.authService.guardarUsuario(resp.usuario, resp.token);
-        this.authService.cargandoSesion.set(false);
-        this.session.iniciarSesion();
-        this.router.navigate(['/publicaciones']);
+      next:(resp:any)=>{
+          this.authService.setUsuario(resp.usuario);
+          this.session.iniciarSesion();
+          this.router.navigate(['/publicaciones']);
       },
       error: (err) => {
         this.cargando.set(false);
@@ -85,3 +83,42 @@ export class Login {
     }, 3000);
   }
 }
+
+
+  // login() {
+
+  //   if (this.formLogin.invalid) {
+  //     this.formLogin.markAllAsTouched();
+  //     return;
+  //   }
+
+  //   this.cargando.set(true);
+  //   this.mensajeError.set('');
+
+  //   this.authService.authLogin({
+  //     usuario: this.formLogin.value.usuario!,
+  //     password: this.formLogin.value.password!
+  //   })
+  //   .subscribe({
+  //     next: (resp:any) => {
+  //       this.authService.guardarToken(resp.token);
+  //       this.authService.guardarUsuario(resp.usuario, resp.token);
+  //       this.authService.cargandoSesion.set(false);
+  //       this.session.iniciarSesion();
+  //       this.router.navigate(['/publicaciones']);
+  //     },
+  //     error: (err) => {
+  //       this.cargando.set(false);
+
+  //       if (err.error?.message === 'Usuario deshabilitado') {
+  //         this.mensajeError.set('Usuario deshabilitado');
+  //       } else if (err.status === 401 || err.status === 400) {
+  //         this.mensajeError.set('Usuario o contraseña incorrectos');
+  //       } else {
+  //         this.mensajeError.set('Ocurrió un error al iniciar sesión');
+  //       }
+
+  //       this.resetearFormulario();
+  //     }
+  //   });
+  // }

@@ -20,33 +20,12 @@ export class CrearUsuario {
   tipoMensaje: 'success' | 'error' | '' = '';
 
   form = new FormGroup({
-
-    nombre: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2)
-    ]),
-
-    apellido: new FormControl('', [
-      Validators.required
-    ]),
-
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
-
-    nombreUsuario: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4)
-    ]),
-
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6)
-    ]),
-
+    nombre: new FormControl('', [ Validators.required, Validators.minLength(2) ]),
+    apellido: new FormControl('', [ Validators.required ]),
+    email: new FormControl('', [ Validators.required, Validators.email ]),
+    nombreUsuario: new FormControl('', [ Validators.required, Validators.minLength(4) ]),
+    password: new FormControl('', [ Validators.required, Validators.minLength(6) ]),
     perfil: new FormControl('usuario')
-
   });
 
   crear() {

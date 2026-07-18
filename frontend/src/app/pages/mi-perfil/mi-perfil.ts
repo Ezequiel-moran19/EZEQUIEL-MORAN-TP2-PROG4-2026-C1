@@ -26,7 +26,7 @@ export class MiPerfil implements OnInit {
   publicaciones: Publicacion[] = [];
 
   ngOnInit() {
-    this.usuario = this.authService.obtenerUsuarioLogueado();
+    this.usuario = this.authService.usuario();
 
     if (this.usuario) {
       this.formEditar.patchValue({
@@ -100,7 +100,7 @@ export class MiPerfil implements OnInit {
       next: (usuarioActualizado: any) => {
 
         this.usuario = usuarioActualizado;
-        this.authService.guardarUsuario(usuarioActualizado);
+        this.authService.setUsuario(usuarioActualizado);
 
         this.formEditar.patchValue({
           nombre: usuarioActualizado.nombre,

@@ -48,7 +48,7 @@ export class PostForm {
   }
   crearPublicacion() {
 
-    const usuario = this.authService.obtenerUsuarioLogueado();
+    const usuario = this.authService.usuario();
     if (!usuario) return;
 
     const formData = new FormData();

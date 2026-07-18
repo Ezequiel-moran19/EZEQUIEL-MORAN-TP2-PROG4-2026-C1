@@ -11,23 +11,37 @@ import { Usuario } from '../../interfaces/usuario.interface';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements OnInit {
+export class Navbar {
   authService = inject(AuthService);
   router = inject(Router);
   
   estaLogueado = this.authService.logueado;
-  usuario = signal<Usuario | null>(null);
-
-  ngOnInit() {
-    const usuarioActual = this.authService.obtenerUsuarioLogueado();
-    if (usuarioActual) {
-      this.usuario.set(usuarioActual);
-    }
-  }
+  usuario = this.authService.usuario;
 
   logout() {
     this.authService.logout();
-    this.usuario.set(null);
     this.router.navigate(['/login']);
   }
 }
+
+
+// export class Navbar implements OnInit {
+//   authService = inject(AuthService);
+//   router = inject(Router);
+  
+//   estaLogueado = this.authService.logueado;
+//   usuario = signal<Usuario | null>(null);
+
+//   ngOnInit() {
+//     const usuarioActual = this.authService.obtenerUsuarioLogueado();
+//     if (usuarioActual) {
+//       this.usuario.set(usuarioActual);
+//     }
+//   }
+
+//   logout() {
+//     this.authService.logout();
+//     this.usuario.set(null);
+//     this.router.navigate(['/login']);
+//   }
+// }
